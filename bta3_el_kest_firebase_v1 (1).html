@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>بتاع القسط — Firebase Cloud</title>
+<style>
+:root{--bg:#f5f5f5;--card:#fff;--text:#171717;--muted:#6b6b6b;--primary:#F4C62E;--primary2:#D9A915;--danger:#b91c1c;--warn:#B8860B;--border:#dedede;--shadow:#00000012;--brand-black:#050505;--brand-gold:#F4C62E;--brand-gold-dark:#D9A915;--brand-white:#fff}*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Tahoma,Arial,sans-serif;color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer}.app{display:flex;min-height:100vh}.side{width:245px;background:var(--brand-black);color:#fff;padding:18px;position:fixed;right:0;top:0;bottom:0;overflow:auto}.brand{font-size:22px;font-weight:800;margin:8px 4px 25px}.brand small{display:block;font-size:11px;color:#a7c8c5;margin-top:5px}.nav button{display:block;width:100%;border:0;background:transparent;color:#d8eeee;text-align:right;padding:12px 13px;border-radius:10px;margin:4px 0}.nav button:hover,.nav button.active{background:#1b1b1b;color:var(--brand-gold);box-shadow:inset -3px 0 0 var(--brand-gold)}.main{margin-right:245px;padding:24px;width:calc(100% - 245px)}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.title h1{margin:0;font-size:25px}.title p{margin:5px 0;color:var(--muted)}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--border);background:#fff;border-radius:9px;padding:9px 13px}.btn.primary{background:var(--brand-gold);color:#111;border-color:var(--brand-gold);font-weight:700}.btn.danger{background:#fff;color:var(--danger);border-color:#fecaca}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:17px}.kpi .label{color:var(--muted);font-size:13px}.kpi .num{font-size:25px;font-weight:800;margin-top:7px}.panel{margin-top:16px}.panel h2{font-size:18px;margin:0 0 12px}.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:10px}.table{width:100%;border-collapse:collapse;min-width:750px}.table th,.table td{padding:10px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}.table th{background:#f8fafc;font-size:13px;color:#475569}.table tr:last-child td{border-bottom:0}.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;background:#ecfdf5;color:#047857}.badge.warn{background:#fffbeb;color:#b45309}.badge.red{background:#fef2f2;color:#b91c1c}.search{width:100%;padding:10px;border:1px solid var(--border);border-radius:9px;margin-bottom:10px}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}.field input,.field select,.field textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:9px;background:#fff}.field textarea{min-height:80px}.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}.modal.show{display:flex}.modalbox{background:#fff;border-radius:15px;max-width:760px;width:100%;max-height:90vh;overflow:auto;padding:20px}.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.modalhead h3{margin:0}.close{border:0;background:#f3f4f6;border-radius:8px;padding:7px 11px}.empty{padding:35px;text-align:center;color:var(--muted)}.row-actions{display:flex;gap:5px}.mini{padding:6px 8px;font-size:12px}.chart{height:230px;display:flex;align-items:end;gap:10px;padding:15px 5px 0}.bar{flex:1;background:var(--brand-gold);border-radius:6px 6px 0 0;min-width:20px;position:relative}.bar span{position:absolute;bottom:100%;right:50%;transform:translateX(50%);font-size:10px;color:var(--muted);margin-bottom:3px}.bar small{position:absolute;top:calc(100% + 5px);right:50%;transform:translateX(50%);font-size:10px;color:var(--muted);white-space:nowrap}.notice{padding:10px 12px;background:#ecfeff;border:1px solid #bae6fd;border-radius:10px;color:#155e75;margin-bottom:12px}.danger-text{color:var(--danger)}@media(max-width:900px){.side{width:72px;padding:10px}.brand{font-size:0;text-align:center}.brand:before{content:'ق';font-size:24px}.brand small{display:none}.nav button{font-size:0;text-align:center;padding:12px 5px}.nav button:before{content:'•';font-size:20px}.main{margin-right:72px;width:calc(100% - 72px);padding:15px}.grid{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}}@media(max-width:520px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}
+
+.brand-logo{text-align:center;margin:2px 0 24px;padding:8px 4px 16px;border-bottom:1px solid #262626}
+.brand-logo img{width:132px;height:132px;object-fit:contain;display:block;margin:0 auto 8px;border-radius:10px}
+.brand-logo .brand-name{font-size:25px;font-weight:900;color:var(--brand-gold);line-height:1.2}
+.brand-logo small{display:block;font-size:11px;color:#bdbdbd;margin-top:7px}
+.nav button{transition:.18s ease}
+.card{box-shadow:0 8px 28px #00000010}
+h1,h2,h3{letter-spacing:-.2px}
+.notice{background:#fff9df;border-color:#f0d77a;color:#6d5600}
+.brand-strip{height:5px;background:var(--brand-gold);border-radius:0 0 4px 4px;margin:-24px -24px 20px;opacity:.95}.brand-strip span{display:none}.brand-strip b{display:none}</style>
+
+<style>
+.firebase-status{display:inline-flex;align-items:center;gap:8px;font-size:13px;margin-top:6px;color:#666}.firebase-status .dot{width:9px;height:9px;border-radius:50%;background:#999;display:inline-block}.firebase-status.ok{color:#176b3a}.firebase-status.ok .dot{background:#1f9d55}.firebase-status.err{color:#a51d2d}.firebase-status.err .dot{background:#c92a2a}.firebase-status.local{color:#8a5a00}.firebase-status.local .dot{background:#d99a00}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side"><div class="brand brand-logo">
+<img src="data:image/jpeg;base64,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" alt="بتاع القسط — أبو الدهب جروب">
+<div class="brand-name">بتاع القسط</div>
+<small>نظام إدارة التقسيط</small>
+</div><nav class="nav" id="nav"></nav></aside>
+<main class="main"><div class="brand-strip"><span>ABUL DAHAB</span><b>GROUP</b></div><div class="top"><div class="title"><h1 id="pageTitle">لوحة التحكم</h1><p id="pageDesc">إدارة الأقساط والعملاء — بتاع القسط</p><div id="firebaseStatus" class="firebase-status"><span class="dot"></span><span class="status-text">جاري الاتصال بفيرباس...</span></div></div><div class="actions"><button class="btn" onclick="backup()">نسخة احتياطية</button><button class="btn" onclick="restoreFile()">استيراد نسخة</button><button class="btn primary" onclick="openQuick()">+ إضافة</button></div></div><div id="view"></div></main>
+</div>
+<div class="modal" id="modal"><div class="modalbox"><div class="modalhead"><h3 id="modalTitle"></h3><button class="close" onclick="closeModal()">إغلاق</button></div><div id="modalBody"></div></div></div>
+<input type="file" id="restoreInput" accept="application/json" style="display:none">
+<script>
+const seed={customers:[{"code": "C-0001", "name": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "phone": null, "address": null, "firstDate": "2026-10-08T00:00:00", "classification": "A", "status": "نشط", "notes": null}, {"code": "C-0002", "name": "محمد (تابع نصار محشي)", "phone": null, "address": null, "firstDate": "2026-10-09T00:00:00", "classification": "A", "status": "نشط", "notes": null}, {"code": "C-0003", "name": "إبراهيم (تابع عبدالرحمن جار العمارة)", "phone": null, "address": null, "firstDate": "2026-10-10T00:00:00", "classification": "A", "status": "نشط", "notes": null}, {"code": "C-0004", "name": "عادل الدريني", "phone": null, "address": null, "firstDate": "2026-10-14T00:00:00", "classification": "A", "status": "نشط", "notes": null}],contracts:[{"id": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "product": "بيض + ديب فريزر", "cost": 200000, "downPayment": 0, "net": 200000, "months": 16, "profitRate": 60.00000000000001, "total": 320000, "remaining": 300000, "monthly": 20000, "startDate": "2026-10-01T00:00:00", "firstDue": "2026-10-08T00:00:00", "status": "نشط", "notes": null}, {"id": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "product": "إسكوتر", "cost": 40000, "downPayment": 0, "net": 40000, "months": 12, "profitRate": 37.5, "total": 55000, "remaining": 50400, "monthly": 4600, "startDate": "2026-10-01T00:00:00", "firstDue": "2026-10-09T00:00:00", "status": "نشط", "notes": null}, {"id": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "product": "موتسيكل بوكسر", "cost": 43000, "downPayment": 15000, "net": 28000, "months": 15, "profitRate": 142.85714285714283, "total": 68000, "remaining": 64250, "monthly": 3750, "startDate": "2026-10-01T00:00:00", "firstDue": "2026-10-10T00:00:00", "status": "نشط", "notes": null}, {"id": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "product": "2 تكييف", "cost": 170000, "downPayment": 0, "net": 170000, "months": 12, "profitRate": 47.058823529411775, "total": 250000, "remaining": 229200, "monthly": 20800, "startDate": "2026-10-01T00:00:00", "firstDue": "2026-10-14T00:00:00", "status": "نشط", "notes": null}],installments:[{"id": "INS-00001", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 1, "dueDate": "2026-10-08T00:00:00", "amount": 20000, "paid": 20000, "remaining": 0, "daysLate": 0, "status": "مدفوع"}, {"id": "INS-00002", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 2, "dueDate": "2026-11-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00003", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 3, "dueDate": "2026-12-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00004", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 4, "dueDate": "2027-01-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00005", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 5, "dueDate": "2027-02-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00006", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 6, "dueDate": "2027-03-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00007", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 7, "dueDate": "2027-04-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00008", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 8, "dueDate": "2027-05-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00009", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 9, "dueDate": "2027-06-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00010", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 10, "dueDate": "2027-07-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00011", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 11, "dueDate": "2027-08-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00012", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 12, "dueDate": "2027-09-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00013", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 13, "dueDate": "2027-10-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00014", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 14, "dueDate": "2027-11-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00015", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 15, "dueDate": "2027-12-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00016", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 16, "dueDate": "2028-01-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00017", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 1, "dueDate": "2026-10-09T00:00:00", "amount": 4600, "paid": 4600, "remaining": 0, "daysLate": 0, "status": "مدفوع"}, {"id": "INS-00018", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 2, "dueDate": "2026-11-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00019", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 3, "dueDate": "2026-12-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00020", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 4, "dueDate": "2027-01-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00021", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 5, "dueDate": "2027-02-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00022", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 6, "dueDate": "2027-03-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00023", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 7, "dueDate": "2027-04-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00024", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 8, "dueDate": "2027-05-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00025", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 9, "dueDate": "2027-06-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00026", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 10, "dueDate": "2027-07-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00027", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 11, "dueDate": "2027-08-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00028", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 12, "dueDate": "2027-09-09T00:00:00", "amount": 4400, "paid": 0, "remaining": 4400, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00029", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 1, "dueDate": "2026-10-10T00:00:00", "amount": 3750, "paid": 3750, "remaining": 0, "daysLate": 0, "status": "مدفوع"}, {"id": "INS-00030", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 2, "dueDate": "2026-11-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00031", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 3, "dueDate": "2026-12-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00032", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 4, "dueDate": "2027-01-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00033", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 5, "dueDate": "2027-02-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00034", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 6, "dueDate": "2027-03-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00035", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 7, "dueDate": "2027-04-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00036", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 8, "dueDate": "2027-05-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00037", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 9, "dueDate": "2027-06-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00038", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 10, "dueDate": "2027-07-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00039", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 11, "dueDate": "2027-08-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00040", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 12, "dueDate": "2027-09-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00041", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 13, "dueDate": "2027-10-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00042", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 14, "dueDate": "2027-11-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00043", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 15, "dueDate": "2027-12-10T00:00:00", "amount": 15500, "paid": 0, "remaining": 15500, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00044", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 1, "dueDate": "2026-10-14T00:00:00", "amount": 20800, "paid": 20800, "remaining": 0, "daysLate": 0, "status": "مدفوع"}, {"id": "INS-00045", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 2, "dueDate": "2026-11-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00046", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 3, "dueDate": "2026-12-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00047", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 4, "dueDate": "2027-01-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00048", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 5, "dueDate": "2027-02-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00049", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 6, "dueDate": "2027-03-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00050", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 7, "dueDate": "2027-04-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00051", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 8, "dueDate": "2027-05-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00052", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 9, "dueDate": "2027-06-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00053", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 10, "dueDate": "2027-07-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00054", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 11, "dueDate": "2027-08-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00055", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 12, "dueDate": "2027-09-14T00:00:00", "amount": 21200, "paid": 0, "remaining": 21200, "daysLate": 0, "status": "مستحق"}],payments:[{"id": "PAY-00001", "date": "2026-10-08T00:00:00", "customerCode": "C-0001", "contractId": "CON-0001", "installmentNumber": 1, "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "amount": 20000, "method": "نقدي", "by": null, "notes": "مثال تحصيل القسط الأول"}, {"id": "PAY-00002", "date": "2026-10-09T00:00:00", "customerCode": "C-0002", "contractId": "CON-0002", "installmentNumber": 1, "customerName": "محمد (تابع نصار محشي)", "amount": 4600, "method": "نقدي", "by": null, "notes": "مثال تحصيل القسط الأول"}, {"id": "PAY-00003", "date": "2026-10-10T00:00:00", "customerCode": "C-0003", "contractId": "CON-0003", "installmentNumber": 1, "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "amount": 3750, "method": "نقدي", "by": null, "notes": "مثال تحصيل القسط الأول"}, {"id": "PAY-00004", "date": "2026-10-14T00:00:00", "customerCode": "C-0004", "contractId": "CON-0004", "installmentNumber": 1, "customerName": "عادل الدريني", "amount": 20800, "method": "نقدي", "by": null, "notes": "مثال تحصيل القسط الأول"}],expenses:[],capital:[{"id": "CAP-00001", "date": "2026-10-01T00:00:00", "type": "رأس مال افتتاحي", "direction": "داخل", "amount": 0, "description": "أدخل رأس المال الافتتاحي عند الحاجة", "balance": 0}]};
+const KEY='installment_local_v1';
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||seed;
+window.getAppDb=()=>db; window.setAppDb=(next)=>{db=next};
+db.contracts=(db.contracts||[]).map(c=>({...c,collectorName:c.collectorName||'',notes:c.notes||''}));
+db.installments=(db.installments||[]).map(x=>({...x,collectorName:x.collectorName||'',notes:x.notes||''}));
+db.payments=(db.payments||[]).map(x=>({...x,by:x.by||'',notes:x.notes||''}));
+db.expenses=(db.expenses||[]).map(x=>({...x,method:x.method||'نقدي'}));
+updateCustomerStatuses();
+let page='dashboard';
+const money=n=>Number(n||0).toLocaleString('ar-EG',{maximumFractionDigits:2})+' ج.م';
+const date=v=>{if(!v)return ''; const d=new Date(v); return isNaN(d)?String(v):d.toLocaleDateString('ar-EG')};
+const iso=v=>{if(!v)return ''; const d=new Date(v); return isNaN(d)?v:d.toISOString().slice(0,10)};
+
+function updateCustomerStatuses(){
+  const today=new Date();
+  today.setHours(0,0,0,0);
+
+  (db.customers||[]).forEach(c=>{
+    const contracts=(db.contracts||[]).filter(x=>x.customerCode===c.code);
+
+    if(!contracts.length){
+      c.status='نشط';
+      return;
+    }
+
+    const hasOverdue=(db.installments||[]).some(x=>{
+      if(x.customerCode!==c.code || Number(x.remaining||0)<=0) return false;
+      const due=new Date(x.dueDate);
+      if(isNaN(due)) return false;
+      due.setHours(0,0,0,0);
+      return due < today;
+    });
+
+    const totalRemaining=contracts.reduce((sum,x)=>sum+Number(x.remaining||0),0);
+
+    if(totalRemaining<=0){
+      c.status='خالص';
+    }else if(hasOverdue){
+      c.status='خامل';
+    }else{
+      c.status='نشط';
+    }
+  });
+}
+
+function save(){updateCustomerStatuses();localStorage.setItem(KEY,JSON.stringify(db)); render(); if(window.firebaseSyncSave) window.firebaseSyncSave(db)}
+function uid(prefix){return prefix+'-'+String(Date.now()).slice(-7)}
+function nav(){let items=[['dashboard','الرئيسية'],['customers','العملاء'],['contracts','العقود'],['installments','جدول الأقساط'],['payments','التحصيل اليومي'],['expenses','المصاريف'],['capital','حركة رأس المال'],['reports','التقارير'],['customerLookup','كود العميل']];document.getElementById('nav').innerHTML=items.map(x=>`<button class="${page===x[0]?'active':''}" onclick="go('${x[0]}')">${x[1]}</button>`).join('')}
+function go(p){page=p;nav();render()}
+function render(){updateCustomerStatuses();nav();let el=document.getElementById('view');let map={dashboard:dashboard,customers:customers,contracts:contracts,installments:installments,payments:payments,expenses:expenses,capital:capital,reports:reports,customerLookup:customerLookup};document.getElementById('pageTitle').textContent=({dashboard:'لوحة التحكم',customers:'العملاء',contracts:'العقود',installments:'جدول الأقساط',payments:'التحصيل اليومي',expenses:'المصاريف',capital:'حركة رأس المال',reports:'التقارير',customerLookup:'كود العميل'})[page];document.getElementById('pageDesc').textContent='إدارة الأقساط والعملاء — بتاع القسط';el.innerHTML=map[page]()}
+function totals(){let contractTotal=db.contracts.reduce((a,x)=>a+Number(x.total||0),0), remaining=db.contracts.reduce((a,x)=>a+Number(x.remaining||0),0), paid=db.payments.reduce((a,x)=>a+Number(x.amount||0),0), exp=db.expenses.reduce((a,x)=>a+Number(x.amount||0),0), overdue=db.installments.filter(x=>x.status!=='مدفوع'&&Number(x.daysLate)>0).reduce((a,x)=>a+Number(x.remaining||0),0);return{contractTotal,remaining,paid,exp,overdue}}
+function dashboard(){let t=totals(), cap=db.capital.reduce((a,x)=>a+(x.direction==='داخل'?1:-1)*Number(x.amount||0),0);let last=db.payments.slice(-7).reduce((a,x)=>{let k=iso(x.date);a[k]=(a[k]||0)+Number(x.amount||0);return a},{});let vals=Object.entries(last);let mx=Math.max(1,...vals.map(x=>x[1]));return `<div class="grid"><div class="card kpi"><div class="label">إجمالي قيمة العقود</div><div class="num">${money(t.contractTotal)}</div></div><div class="card kpi"><div class="label">إجمالي المتبقي</div><div class="num">${money(t.remaining)}</div></div><div class="card kpi"><div class="label">إجمالي التحصيل</div><div class="num">${money(t.paid)}</div></div><div class="card kpi"><div class="label">المتأخر</div><div class="num danger-text">${money(t.overdue)}</div></div></div><div class="grid panel"><div class="card kpi"><div class="label">عدد العملاء</div><div class="num">${db.customers.length}</div></div><div class="card kpi"><div class="label">عدد العقود</div><div class="num">${db.contracts.length}</div></div><div class="card kpi"><div class="label">المصاريف</div><div class="num">${money(t.exp)}</div></div><div class="card kpi"><div class="label">رصيد رأس المال</div><div class="num">${money(cap)}</div></div></div><div class="card panel"><h2>آخر التحصيلات</h2>${paymentTable(db.payments.slice(-8).reverse())}</div><div class="card panel"><h2>التحصيل الأخير</h2><div class="chart">${vals.length?vals.map(([k,v])=>`<div class="bar" style="height:${Math.max(8,v/mx*180)}px"><span>${money(v)}</span><small>${date(k)}</small></div>`).join(''):'<div class="empty">لا توجد تحصيلات بعد</div>'}</div></div>`}
+
+function customerLookup(){
+  return `<div class="card">
+    <div class="notice">أدخل كود العميل كما هو، مثل <b>C-0001</b>، وسيتم عرض كل بيانات العميل المرتبطة بهذا الكود تلقائيًا.</div>
+    <div class="form-grid">
+      <div class="field">
+        <label>كود العميل</label>
+        <input id="customerLookupCode" type="text" placeholder="مثال: C-0001"
+          oninput="lookupCustomer(this.value)" autocomplete="off">
+      </div>
+    </div>
+    <div id="customerLookupResult" style="margin-top:16px">
+      <div class="empty">أدخل كود العميل لعرض بياناته</div>
+    </div>
+  </div>`;
+}
+
+function lookupCustomer(rawCode){
+  const code=(rawCode||'').trim().toUpperCase();
+  const el=document.getElementById('customerLookupResult');
+  if(!el)return;
+  if(!code){
+    el.innerHTML='<div class="empty">أدخل كود العميل لعرض بياناته</div>';
+    return;
+  }
+
+  const c=db.customers.find(x=>String(x.code||'').toUpperCase()===code);
+  if(!c){
+    el.innerHTML='<div class="empty danger-text">لا يوجد عميل بهذا الكود.</div>';
+    return;
+  }
+
+  const contracts=db.contracts.filter(x=>x.customerCode===c.code);
+  const installments=db.installments.filter(x=>x.customerCode===c.code);
+  const payments=db.payments.filter(x=>x.customerCode===c.code);
+  const totalContracts=contracts.reduce((a,x)=>a+Number(x.total||0),0);
+  const totalPaid=payments.reduce((a,x)=>a+Number(x.amount||0),0);
+  const totalRemaining=contracts.reduce((a,x)=>a+Number(x.remaining||0),0);
+  const overdue=installments.filter(x=>x.status!=='مدفوع'&&Number(x.daysLate)>0)
+    .reduce((a,x)=>a+Number(x.remaining||0),0);
+
+  el.innerHTML=`
+    <div class="grid">
+      <div class="card kpi"><div class="label">اسم العميل</div><div class="num" style="font-size:18px">${c.name||'-'}</div></div>
+      <div class="card kpi"><div class="label">كود العميل</div><div class="num" style="font-size:18px">${c.code}</div></div>
+      <div class="card kpi"><div class="label">إجمالي العقود</div><div class="num">${money(totalContracts)}</div></div>
+      <div class="card kpi"><div class="label">إجمالي المدفوع</div><div class="num">${money(totalPaid)}</div></div>
+      <div class="card kpi"><div class="label">إجمالي المتبقي</div><div class="num danger-text">${money(totalRemaining)}</div></div>
+      <div class="card kpi"><div class="label">المتأخر</div><div class="num danger-text">${money(overdue)}</div></div>
+    </div>
+
+    <div class="card panel">
+      <h2>بيانات العميل</h2>
+      <div class="table-wrap"><table class="table"><tbody>
+        <tr><th>كود العميل</th><td>${c.code}</td><th>اسم العميل</th><td>${c.name||''}</td></tr>
+        <tr><th>رقم الموبايل</th><td>${c.phone||''}</td><th>العنوان</th><td>${c.address||''}</td></tr>
+        <tr><th>تاريخ أول تعامل</th><td>${date(c.firstDate)}</td><th>التصنيف</th><td>${c.classification||''}</td></tr>
+        <tr><th>الحالة</th><td><span class="badge ${c.status==='خامل'?'warn':c.status==='خالص'?'red':''}">${c.status||'نشط'}</span></td><th>ملاحظات</th><td>${c.notes||''}</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="card panel">
+      <h2>عقود العميل — عدد العقود: ${contracts.length}</h2>
+      ${contracts.length ? contractTable(contracts,true) : '<div class="empty">لا توجد عقود لهذا العميل</div>'}
+    </div>
+
+    <div id="selectedCustomerContractInstallments"></div>
+
+    <div class="card panel">
+      <h2>سجل التحصيلات</h2>
+      ${payments.length ? paymentTable(payments.slice().reverse()) : '<div class="empty">لا توجد تحصيلات لهذا العميل</div>'}
+    </div>`;
+}
+
+
+function selectCustomerContract(contractId){
+  const box=document.getElementById('selectedCustomerContractInstallments');
+  if(!box)return;
+
+  const c=db.contracts.find(x=>x.id===contractId);
+  if(!c){
+    box.innerHTML='';
+    return;
+  }
+
+  const rows=db.installments.filter(x=>x.contractId===contractId);
+
+  box.innerHTML=`<div class="card panel">
+    <div class="actions" style="justify-content:space-between;align-items:center;margin-bottom:10px">
+      <h2 style="margin:0">جدول أقساط العقد ${c.id}</h2>
+      <button class="btn mini" onclick="document.getElementById('selectedCustomerContractInstallments').innerHTML=''">إلغاء الاختيار</button>
+    </div>
+    <div class="notice">
+      <b>العميل:</b> ${c.customerName} — <b>العقد:</b> ${c.id}
+      — <b>إجمالي العقد:</b> ${money(c.total)}
+      — <b>المتبقي:</b> ${money(c.remaining)}
+    </div>
+    ${rows.length ? instTable(rows) : '<div class="empty">لا توجد أقساط لهذا العقد</div>'}
+  </div>`;
+}
+
+function customers(){updateCustomerStatuses();return `<div class="card"><div class="notice"><b>حالة العميل تلقائيًا:</b> <span class="badge">نشط</span> إذا لا توجد أقساط متأخرة، <span class="badge warn">خامل</span> إذا يوجد قسط متأخر، و<span class="badge red">خالص</span> عند سداد جميع العقود بالكامل.</div><input class="search" placeholder="ابحث بالاسم أو الكود أو الهاتف" oninput="filterTable(this,'customersTable')"><div class="actions" style="margin-bottom:10px"><button class="btn primary" onclick="customerForm()">+ إضافة عميل</button></div><div id="customersTable">${customerTable(db.customers)}</div></div>`}
+function customerTable(rows){if(!rows.length)return '<div class="empty">لا توجد بيانات</div>';return `<div class="table-wrap"><table class="table"><thead><tr><th>الكود</th><th>الاسم</th><th>الهاتف</th><th>العقود</th><th>إجمالي العقود</th><th>المتبقي</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody>${rows.map(c=>{let cs=db.contracts.filter(x=>x.customerCode===c.code);return `<tr><td>${c.code}</td><td>${c.name}</td><td>${c.phone||''}</td><td><span class="badge">${cs.length} عقد</span></td><td>${money(cs.reduce((a,x)=>a+Number(x.total||0),0))}</td><td>${money(cs.reduce((a,x)=>a+Number(x.remaining||0),0))}</td><td><span class="badge ${c.status==='خامل'?'warn':c.status==='خالص'?'red':''}">${c.status||'نشط'}</span></td><td><div class="row-actions"><button class="btn mini" onclick="customerForm('${c.code}')">تعديل</button><button class="btn mini danger" onclick="delCustomer('${c.code}')">حذف</button></div></td></tr>`}).join('')}</tbody></table></div>`}
+function contracts(){return `<div class="card"><input class="search" placeholder="ابحث في العقود" oninput="filterTable(this,'contractsTable')"><div class="actions" style="margin-bottom:10px"><button class="btn primary" onclick="contractForm()">+ عقد جديد</button></div><div id="contractsTable">${contractTable(db.contracts)}</div></div>`}
+function contractTable(rows,withSelect=false){
+  if(!rows.length)return '<div class="empty">لا توجد عقود</div>';
+  return `<div class="table-wrap"><table class="table"><thead><tr>
+    <th>العقد</th><th>العميل</th><th>المنتج</th><th>إجمالي العقد</th><th>المقدم</th><th>القسط</th><th>المتبقي</th><th>اسم المحصل</th><th>ملاحظات</th><th>الحالة</th><th>إجراءات</th>
+  </tr></thead><tbody>${rows.map(c=>`<tr>
+    <td>${c.id}</td><td>${c.customerName}</td><td>${c.product}</td><td>${money(c.total)}</td><td>${money(c.downPayment)}</td><td>${money(c.monthly)}</td><td>${money(c.remaining)}</td>
+    <td>${c.collectorName||''}</td><td>${c.notes||''}</td><td><span class="badge">${c.status}</span></td>
+    <td>${withSelect?`<button class="btn mini primary" onclick="selectCustomerContract('${c.id}')">اختيار</button>`:''}
+      <button class="btn mini" onclick="contractForm('${c.id}')">تعديل</button>
+      <button class="btn mini danger" onclick="delContract('${c.id}')">حذف</button>
+    </td>
+  </tr>`).join('')}</tbody></table></div>`;
+}
+function installments(){return `<div class="card"><input class="search" placeholder="ابحث بالعميل أو العقد" oninput="filterTable(this,'instTable')"><div id="instTable">${instTable(db.installments)}</div></div>`}
+function instTable(rows){
+  return `<div class="table-wrap"><table class="table"><thead><tr>
+    <th>العقد</th><th>العميل</th><th>#</th><th>الاستحقاق</th><th>قيمة القسط</th><th>المدفوع</th><th>المتبقي</th><th>التأخير</th><th>اسم المحصل</th><th>ملاحظات</th><th>الحالة</th>
+  </tr></thead><tbody>${rows.map(x=>{
+    let ps=db.payments.filter(p=>p.contractId===x.contractId&&Number(p.installmentNumber)===Number(x.number));
+    let last=ps[ps.length-1];
+    return `<tr><td>${x.contractId}</td><td>${x.customerName}</td><td>${x.number}</td><td>${date(x.dueDate)}</td><td>${money(x.amount)}</td><td>${money(x.paid)}</td><td>${money(x.remaining)}</td><td>${x.daysLate||0}</td><td>${last?.by||x.collectorName||''}</td><td>${last?.notes||x.notes||''}</td><td><span class="badge ${x.status==='مدفوع'?'':'warn'}">${x.status}</span></td></tr>`;
+  }).join('')}</tbody></table></div>`;
+}
+function payments(){
+  updateCustomerStatuses();
+  return `<div class="card">
+    <div class="actions" style="margin-bottom:10px">
+      <button class="btn primary" onclick="paymentForm()">+ تسجيل تحصيل</button>
+      <button class="btn" onclick="dailyDueCollections()">استحقاق التحصيلات اليومية</button>
+      <button class="btn" onclick="overdueCustomers()">المتأخرين</button>
+    </div>
+    <div class="field" style="margin-bottom:12px">
+      <label>اسم العميل</label>
+      <input id="paymentCustomerSearch" class="search" style="margin-bottom:0"
+        placeholder="اكتب اسم العميل أو كود العميل لعرض سجله فقط"
+        oninput="filterCustomerPayments(this.value)" autocomplete="off">
+    </div>
+    <div id="customerPaymentRecord">
+      ${paymentTable(db.payments.slice().reverse())}
+    </div>
+  </div>`;
+}
+
+function filterCustomerPayments(value){
+  const q=(value||'').trim().toLowerCase();
+  const el=document.getElementById('customerPaymentRecord');
+  if(!el)return;
+
+  if(!q){
+    el.innerHTML=paymentTable(db.payments.slice().reverse());
+    return;
+  }
+
+  const rows=db.payments.slice().reverse().filter(p=>{
+    const name=String(p.customerName||'').toLowerCase();
+    const code=String(p.customerCode||'').toLowerCase();
+    return name.includes(q) || code.includes(q);
+  });
+
+  if(!rows.length){
+    el.innerHTML='<div class="empty">لا يوجد سجل تحصيل لهذا الاسم أو الكود.</div>';
+    return;
+  }
+
+  const customerCodes=[...new Set(rows.map(x=>x.customerCode).filter(Boolean))];
+  const title=customerCodes.length===1
+    ? `سجل تحصيل العميل — ${rows[0].customerName||customerCodes[0]} (${customerCodes[0]})`
+    : 'سجل التحصيلات المطابقة';
+
+  el.innerHTML=`<div class="notice"><b>${title}</b> — عدد التحصيلات: ${rows.length} — إجمالي التحصيل: ${money(rows.reduce((a,x)=>a+Number(x.amount||0),0))}</div>${paymentTable(rows)}`;
+}
+
+
+function overdueCustomers(){
+  updateCustomerStatuses();
+  const today=new Date();
+  today.setHours(0,0,0,0);
+
+  const overdue=(db.installments||[]).filter(x=>{
+    if(Number(x.remaining||0)<=0) return false;
+    const due=new Date(x.dueDate);
+    if(isNaN(due)) return false;
+    due.setHours(0,0,0,0);
+    return due < today;
+  });
+
+  const groups={};
+  overdue.forEach(x=>{
+    const key=x.customerCode||x.customerName||x.contractId;
+    if(!groups[key]){
+      groups[key]={
+        customerCode:x.customerCode||'',
+        customerName:x.customerName||'',
+        installments:[],
+        total:0,
+        oldest:x.dueDate
+      };
+    }
+    groups[key].installments.push(x);
+    groups[key].total+=Number(x.remaining||0);
+    if(String(x.dueDate)<String(groups[key].oldest)) groups[key].oldest=x.dueDate;
+  });
+
+  const customers=Object.values(groups).sort((a,b)=>String(a.oldest).localeCompare(String(b.oldest)));
+  const total=customers.reduce((sum,x)=>sum+x.total,0);
+
+  openModal('المتأخرين',`
+    <div class="notice">
+      <b>العملاء المتأخرون عن السداد:</b> ${customers.length}
+      — إجمالي المبالغ المتأخرة: <b>${money(total)}</b>
+    </div>
+    ${customers.length ? `
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>اسم العميل</th>
+              <th>كود العميل</th>
+              <th>عدد الأقساط المتأخرة</th>
+              <th>أقدم استحقاق</th>
+              <th>إجمالي المتأخر</th>
+              <th>إجراء</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${customers.map(c=>`
+              <tr>
+                <td>${c.customerName}</td>
+                <td>${c.customerCode}</td>
+                <td>${c.installments.length}</td>
+                <td>${date(c.oldest)}</td>
+                <td class="danger-text">${money(c.total)}</td>
+                <td>
+                  <button class="btn mini" onclick="closeModal();go('customerLookup');setTimeout(()=>{const el=document.getElementById('customerLookupCode');if(el){el.value='${String(c.customerCode).replace(/'/g,"\\'")}';lookupCustomer(el.value)}},0)">
+                    ملف العميل
+                  </button>
+                </td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    ` : '<div class="empty">لا يوجد عملاء متأخرون حاليًا.</div>'}
+  `);
+}
+
+function dailyDueCollections(){
+  const today=iso(new Date());
+  const due=(db.installments||[])
+    .filter(x=>iso(x.dueDate)===today && Number(x.remaining||0)>0)
+    .sort((a,b)=>String(a.dueDate).localeCompare(String(b.dueDate)));
+
+  const total=due.reduce((sum,x)=>sum+Number(x.remaining||0),0);
+
+  openModal('استحقاق التحصيلات اليومية',`
+    <div class="notice">
+      <b>تاريخ الاستحقاق اليوم:</b> ${date(today)}
+      — عدد العملاء/الأقساط المستحقة: <b>${due.length}</b>
+      — إجمالي المطلوب تحصيله: <b>${money(total)}</b>
+    </div>
+    ${due.length ? `
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>العميل</th>
+              <th>كود العميل</th>
+              <th>العقد</th>
+              <th>القسط</th>
+              <th>قيمة القسط</th>
+              <th>المتبقي</th>
+              <th>الحالة</th>
+              <th>إجراء</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${due.map(x=>`
+              <tr>
+                <td>${x.customerName||''}</td>
+                <td>${x.customerCode||''}</td>
+                <td>${x.contractId||''}</td>
+                <td>${x.number}</td>
+                <td>${money(x.amount)}</td>
+                <td>${money(x.remaining)}</td>
+                <td><span class="badge warn">مستحق اليوم</span></td>
+                <td><button class="btn mini primary" onclick="closeModal();paymentForm('${x.contractId}','${x.id}')">تحصيل</button></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    ` : '<div class="empty">لا توجد أقساط مستحقة للتحصيل اليوم.</div>'}
+  `);
+}
+function paymentTable(rows){
+  if(!rows.length)return '<div class="empty">لا توجد تحصيلات</div>';
+  return `<div class="table-wrap"><table class="table"><thead><tr>
+    <th>التاريخ</th><th>العميل</th><th>العقد</th><th>القسط</th><th>المبلغ</th><th>الطريقة</th><th>اسم المحصل</th><th>ملاحظات</th><th>إجراء</th>
+  </tr></thead><tbody>${rows.map(x=>`<tr>
+    <td>${date(x.date)}</td><td>${x.customerName}</td><td>${x.contractId}</td><td>${x.installmentNumber}</td><td>${money(x.amount)}</td><td>${x.method||''}</td><td>${x.by||''}</td><td>${x.notes||''}</td>
+    <td><button class="btn mini danger" onclick="delPayment('${x.id}')">حذف</button></td>
+  </tr>`).join('')}</tbody></table></div>`;
+}
+function expenses(){return `<div class="card"><div class="actions" style="margin-bottom:10px"><button class="btn primary" onclick="expenseForm()">+ إضافة مصروف</button></div>${simpleTable(db.expenses,['date','type','description','amount','method','notes'],['التاريخ','نوع المصروف','البيان','المبلغ','طريقة الدفع','ملاحظات'],'expense')}</div>`}
+function capital(){return `<div class="card"><div class="actions" style="margin-bottom:10px"><button class="btn primary" onclick="capitalForm()">+ إضافة حركة</button></div>${simpleTable(db.capital,['date','type','direction','amount','description','balance'],['التاريخ','نوع الحركة','داخل/خارج','المبلغ','البيان','الرصيد'],'capital')}</div>`}
+function simpleTable(rows,keys,heads,type){if(!rows.length)return '<div class="empty">لا توجد بيانات</div>';return `<div class="table-wrap"><table class="table"><thead><tr>${heads.map(h=>`<th>${h}</th>`).join('')}<th>إجراء</th></tr></thead><tbody>${rows.map(x=>`<tr>${keys.map(k=>`<td>${k==='date'||k==='balance'? (k==='balance'?money(x[k]):date(x[k])) : k==='amount'?money(x[k]):(x[k]??'')}</td>`).join('')}<td><button class="btn mini danger" onclick="delRow('${type}','${x.id}')">حذف</button></td></tr>`).join('')}</tbody></table></div>`}
+function reports(){let t=totals(), paidByMethod={};db.payments.forEach(x=>paidByMethod[x.method||'غير محدد']=(paidByMethod[x.method||'غير محدد']||0)+Number(x.amount||0));let late=db.installments.filter(x=>x.status!=='مدفوع'&&Number(x.daysLate)>0);return `<div class="grid"><div class="card kpi"><div class="label">نسبة التحصيل من قيمة العقود</div><div class="num">${t.contractTotal?(t.paid/t.contractTotal*100).toFixed(1):0}%</div></div><div class="card kpi"><div class="label">نسبة المتبقي</div><div class="num">${t.contractTotal?(t.remaining/t.contractTotal*100).toFixed(1):0}%</div></div><div class="card kpi"><div class="label">عدد الأقساط المتأخرة</div><div class="num">${late.length}</div></div><div class="card kpi"><div class="label">إجمالي المصروفات</div><div class="num">${money(t.exp)}</div></div></div><div class="card panel"><h2>التحصيل حسب طريقة الدفع</h2>${Object.entries(paidByMethod).map(([k,v])=>`<p><b>${k}</b> — ${money(v)}</p>`).join('')||'<div class="empty">لا توجد بيانات</div>'}</div><div class="card panel"><h2>الأقساط المتأخرة</h2>${instTable(late)}</div>`}
+function filterTable(input,id){let q=input.value.trim().toLowerCase();let rows=document.querySelectorAll('#'+id+' tbody tr');rows.forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?'':'none')}
+function openModal(title,body){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBody').innerHTML=body;document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function field(label,name,value='',type='text',extra=''){return `<div class="field"><label>${label}</label><input name="${name}" type="${type}" value="${value??''}" ${extra}></div>`}
+
+function paymentMethodSelect(name='method',value='نقدي',label='طريقة الدفع'){
+  const v=value||'نقدي';
+  return `<div class="field"><label>${label}</label><select name="${name}">
+    <option value="نقدي" ${v==='نقدي'?'selected':''}>نقدي</option>
+    <option value="إنستا" ${v==='إنستا'?'selected':''}>إنستا</option>
+    <option value="فودفون كاش" ${v==='فودفون كاش'?'selected':''}>فودفون كاش</option>
+  </select></div>`;
+}
+
+
+function customerForm(code){let c=db.customers.find(x=>x.code===code)||{};openModal(code?'تعديل عميل':'إضافة عميل',`<form onsubmit="saveCustomer(event,'${code||''}')"><div class="form-grid">${field('كود العميل','code',c.code||'','text',code?'readonly':'')}${field('اسم العميل','name',c.name)}${field('رقم الموبايل','phone',c.phone)}${field('العنوان','address',c.address)}${field('تاريخ أول تعامل','firstDate',iso(c.firstDate),'date')}${field('التصنيف','classification',c.classification||'A')}<div class="field" style="grid-column:1/-1"><label>ملاحظات</label><textarea name="notes">${c.notes||''}</textarea></div></div>${code?`<div class="notice">حالة العميل الحالية: <b>${c.status||'نشط'}</b> — يتم تحديثها تلقائيًا ولا يمكن تعديلها يدويًا.</div>`:''}<div class="actions" style="margin-top:15px">
+<button class="btn primary">حفظ</button>
+${code?`<button type="button" class="btn" onclick="closeModal();contractFormForCustomer('${code}')">+ إضافة عقد للعميل</button>`:''}
+</div></form>`)}
+function saveCustomer(e,old){e.preventDefault();let f=new FormData(e.target);let c={code:f.get('code')||uid('C'),name:f.get('name'),phone:f.get('phone'),address:f.get('address'),firstDate:f.get('firstDate'),classification:f.get('classification'),status:'نشط',notes:f.get('notes')};if(old){let i=db.customers.findIndex(x=>x.code===old);db.customers[i]=c}else db.customers.push(c);closeModal();save()}
+function delCustomer(code){if(!confirm('حذف العميل؟ سيتم أيضًا حذف عقوده وأقساطه.'))return;db.customers=db.customers.filter(x=>x.code!==code);let ids=db.contracts.filter(x=>x.customerCode===code).map(x=>x.id);db.contracts=db.contracts.filter(x=>x.customerCode!==code);db.installments=db.installments.filter(x=>!ids.includes(x.contractId));db.payments=db.payments.filter(x=>x.customerCode!==code);save()}
+function contractForm(id){let c=db.contracts.find(x=>x.id===id)||{};let opts=db.customers.map(x=>`<option value="${x.code}" ${x.code===c.customerCode?'selected':''}>${x.code} — ${x.name}</option>`).join('');openModal(id?'تعديل عقد':'إضافة عقد',`<form onsubmit="saveContract(event,'${id||''}')"><div class="form-grid"><div class="field"><label>العميل</label><select name="customerCode" required>${opts}</select></div>${field('المنتج','product',c.product)}${field('تكلفة المنتج','cost',c.cost||0,'number')}${field('المقدم','downPayment',c.downPayment||0,'number')}${field('مدة التقسيط بالشهور','months',c.months||12,'number')}${field('نسبة الربح','profitRate',c.profitRate||0,'number')} ${field('تاريخ بداية العقد','startDate',iso(c.startDate)||iso(new Date()),'date')}${field('أول استحقاق','firstDue',iso(c.firstDue),'date')}${field('اسم المحصل','collectorName',c.collectorName||'')}<div class="field" style="grid-column:1/-1"><label>ملاحظات</label><textarea name="notes">${c.notes||''}</textarea></div></div><div class="notice">
+عند إنشاء عقد جديد سيُنشأ جدول الأقساط تلقائيًا بالقسط الشهري وإجمالي العقد.
+إذا كان العميل لديه عقود سابقة، سيظل <b>كود العميل نفسه</b> ويتم إنشاء رقم عقد جديد مستقل.
+</div>
+<div class="actions">
+<button class="btn primary">حفظ العقد</button>
+${c.customerCode?`<button type="button" class="btn" onclick="closeModal();contractFormForCustomer('${c.customerCode}')">+ إضافة عقد آخر لنفس العميل</button>`:''}
+</div></form>`)}
+
+function contractFormForCustomer(customerCode){
+  const customer=db.customers.find(x=>x.code===customerCode);
+  if(!customer){alert('العميل غير موجود');return;}
+  let c={customerCode:customer.code,customerName:customer.name};
+  openModal('إضافة عقد للعميل',`<form onsubmit="saveContract(event,'')">
+    <div class="notice">
+      العميل: <b>${customer.name}</b> — كود العميل: <b>${customer.code}</b>
+      — عدد العقود الحالية: <b>${db.contracts.filter(x=>x.customerCode===customer.code).length}</b>
+    </div>
+    <div class="form-grid">
+      <div class="field">
+        <label>العميل</label>
+        <input value="${customer.code} — ${customer.name}" readonly>
+        <input type="hidden" name="customerCode" value="${customer.code}">
+      </div>
+      ${field('المنتج','product',c.product)}
+      ${field('تكلفة المنتج','cost',c.cost||0,'number')}
+      ${field('المقدم','downPayment',c.downPayment||0,'number')}
+      ${field('مدة التقسيط بالشهور','months',c.months||12,'number')}
+      ${field('نسبة الربح','profitRate',c.profitRate||0,'number')}
+      ${field('تاريخ بداية العقد','startDate',iso(new Date()),'date')}
+      ${field('أول استحقاق','firstDue','','date')}
+      ${field('اسم المحصل','collectorName','')}
+      <div class="field" style="grid-column:1/-1">
+        <label>ملاحظات</label>
+        <textarea name="notes"></textarea>
+      </div>
+    </div>
+    <div class="notice">سيتم إنشاء عقد جديد برقم مستقل، مع الاحتفاظ بنفس كود العميل. وسيظهر العقد تلقائيًا ضمن ملف العميل عند البحث بكوده.</div>
+    <button class="btn primary">حفظ العقد</button>
+  </form>`);
+}
+
+function saveContract(e,old){
+  e.preventDefault();
+  let f=new FormData(e.target),customer=db.customers.find(x=>x.code===f.get('customerCode'));
+  if(!customer)return alert('العميل غير موجود');
+  let cost=+f.get('cost')||0,down=+f.get('downPayment')||0,months=+f.get('months')||1,rate=+f.get('profitRate')||0;
+  let net=cost-down,total=Math.round((net*(1+rate/100))*100)/100,monthly=Math.round(total/months*100)/100;
+  let previousPayments=old?db.payments.filter(x=>x.contractId===old):[];
+  let c={id:old||uid('CON'),customerCode:customer.code,customerName:customer.name,product:f.get('product'),cost,downPayment:down,net,months,profitRate:rate,total,remaining:total,monthly,startDate:f.get('startDate'),firstDue:f.get('firstDue'),status:'نشط',collectorName:f.get('collectorName')||'',notes:f.get('notes')||''};
+  if(old){
+    let i=db.contracts.findIndex(x=>x.id===old);
+    if(i>=0)db.contracts[i]=c;
+    db.installments=db.installments.filter(x=>x.contractId!==old);
+  }else db.contracts.push(c);
+  generateInstallments(c);
+  if(previousPayments.length){
+    previousPayments.forEach(p=>{
+      let ins=db.installments.find(x=>x.contractId===c.id&&Number(x.number)===Number(p.installmentNumber));
+      if(ins){
+        let amt=Math.min(Number(p.amount||0),ins.remaining);
+        ins.paid+=amt;ins.remaining=Math.max(0,ins.amount-ins.paid);
+        ins.status=ins.remaining===0?'مدفوع':'مدفوع جزئي';
+      }
+    });
+    c.remaining=Math.max(0,total-previousPayments.reduce((a,p)=>a+Number(p.amount||0),0));
+    if(c.remaining===0)c.status='مكتمل';
+  }
+  closeModal();save();
+}
+function generateInstallments(c){let first=new Date(c.firstDue||c.startDate);for(let i=1;i<=c.months;i++){let d=new Date(first);d.setMonth(d.getMonth()+i-1);let amount=i===c.months?Math.round((c.total-c.monthly*(c.months-1))*100)/100:c.monthly;db.installments.push({id:uid('INS'),contractId:c.id,customerCode:c.customerCode,customerName:c.customerName,number:i,dueDate:d.toISOString().slice(0,10),amount,paid:0,remaining:amount,daysLate:0,collectorName:c.collectorName||'',notes:c.notes||'',status:'مستحق'})}}
+function delContract(id){if(!confirm('حذف العقد وجدول أقساطه؟'))return;db.contracts=db.contracts.filter(x=>x.id!==id);db.installments=db.installments.filter(x=>x.contractId!==id);save()}
+function paymentForm(selectedContractId='',selectedInstallmentId=''){
+  let opts=db.contracts.map(c=>`<option value="${c.id}" ${c.id===selectedContractId?'selected':''}>${c.id} — ${c.customerName} — متبقي ${money(c.remaining)}</option>`).join('');
+  openModal('تسجيل تحصيل',`<form onsubmit="savePayment(event)"><div class="form-grid"><div class="field"><label>العقد</label><select name="contractId" required onchange="fillInst(this.value)">${opts}</select></div><div class="field"><label>القسط</label><select name="installmentId" id="payInst" required></select></div>${field('التاريخ','date',iso(new Date()),'date')}${field('المبلغ','amount',0,'number')}${paymentMethodSelect('method','نقدي','طريقة الدفع')}${field('اسم المحصل','by')}${field('ملاحظات التحصيل','notes')}</div><div class="notice">طريقة الدفع المتاحة: نقدي — إنستا — فودفون كاش.</div><button class="btn primary" style="margin-top:15px">حفظ التحصيل</button></form>`);
+  const cid=selectedContractId || (db.contracts[0]&&db.contracts[0].id);
+  if(cid){
+    fillInst(cid);
+    if(selectedInstallmentId){
+      const el=document.getElementById('payInst');
+      if(el){
+        el.value=selectedInstallmentId;
+        const ins=db.installments.find(x=>x.id===selectedInstallmentId);
+        const amount=document.querySelector('#modalBody input[name="amount"]');
+        if(ins && amount) amount.value=ins.remaining;
+      }
+    }
+  }
+}
+function fillInst(cid){let list=db.installments.filter(x=>x.contractId===cid&&x.remaining>0);let el=document.getElementById('payInst');if(!el)return;el.innerHTML=list.map(x=>`<option value="${x.id}">القسط ${x.number} — ${date(x.dueDate)} — ${money(x.remaining)}</option>`).join('');}
+function savePayment(e){e.preventDefault();let f=new FormData(e.target),ins=db.installments.find(x=>x.id===f.get('installmentId')),c=db.contracts.find(x=>x.id===f.get('contractId')),amt=Math.min(+f.get('amount')||0,ins.remaining);if(!amt)return alert('أدخل مبلغًا صحيحًا');let p={id:uid('PAY'),date:f.get('date'),customerCode:c.customerCode,contractId:c.id,installmentNumber:ins.number,customerName:c.customerName,amount:amt,method:f.get('method'),by:f.get('by'),notes:f.get('notes')};db.payments.push(p);ins.paid+=amt;ins.remaining=Math.max(0,ins.amount-ins.paid);ins.status=ins.remaining===0?'مدفوع':'مدفوع جزئي';c.remaining=Math.max(0,c.remaining-amt);if(c.remaining===0)c.status='مكتمل';closeModal();save()}
+function delPayment(id){let p=db.payments.find(x=>x.id===id);if(!p||!confirm('حذف التحصيل وإرجاع المبلغ للمتبقي؟'))return;let ins=db.installments.find(x=>x.contractId===p.contractId&&x.number===p.installmentNumber);let c=db.contracts.find(x=>x.id===p.contractId);if(ins){ins.paid=Math.max(0,ins.paid-p.amount);ins.remaining=ins.amount-ins.paid;ins.status=ins.remaining===0?'مدفوع':ins.paid>0?'مدفوع جزئي':'مستحق'}if(c)c.remaining+=p.amount;db.payments=db.payments.filter(x=>x.id!==id);save()}
+function expenseForm(){openModal('إضافة مصروف',`<form onsubmit="saveExpense(event)"><div class="form-grid">${field('التاريخ','date',iso(new Date()),'date')}${field('نوع المصروف','type')}${field('البيان','description')}${field('المبلغ','amount',0,'number')}${paymentMethodSelect('method','نقدي','طريقة الدفع')}${field('ملاحظات','notes')}</div><button class="btn primary" style="margin-top:15px">حفظ</button></form>`)}
+function saveExpense(e){e.preventDefault();let f=new FormData(e.target);db.expenses.push({id:uid('EXP'),date:f.get('date'),type:f.get('type'),description:f.get('description'),amount:+f.get('amount')||0,method:f.get('method'),notes:f.get('notes')});closeModal();save()}
+function capitalForm(){openModal('إضافة حركة رأس مال',`<form onsubmit="saveCapital(event)"><div class="form-grid">${field('التاريخ','date',iso(new Date()),'date')}${field('نوع الحركة','type')}${field('المبلغ','amount',0,'number')}<div class="field"><label>داخل/خارج</label><select name="direction"><option>داخل</option><option>خارج</option></select></div>${field('البيان','description')}</div><button class="btn primary" style="margin-top:15px">حفظ</button></form>`)}
+function saveCapital(e){e.preventDefault();let f=new FormData(e.target);db.capital.push({id:uid('CAP'),date:f.get('date'),type:f.get('type'),direction:f.get('direction'),amount:+f.get('amount')||0,description:f.get('description'),balance:0});let b=0;db.capital.forEach(x=>{b+=(x.direction==='داخل'?1:-1)*Number(x.amount||0);x.balance=b});closeModal();save()}
+function delRow(type,id){if(!confirm('حذف السجل؟'))return;let map={expense:'expenses',capital:'capital'};db[map[type]]=db[map[type]].filter(x=>x.id!==id);save()}
+function openQuick(){if(page==='customers')customerForm();else if(page==='contracts')contractForm();else if(page==='payments')paymentForm();else if(page==='expenses')expenseForm();else if(page==='capital')capitalForm();else go('customers')}
+function backup(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='بتاع_القسط_نسخة_احتياطية_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href)}
+function restoreFile(){document.getElementById('restoreInput').click()}document.getElementById('restoreInput').onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.customers||!x.contracts)throw 0;if(confirm('استبدال البيانات الحالية بالنسخة؟')){db=x;save()}}catch{alert('ملف النسخة غير صالح')}};r.readAsText(f)};
+render();
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCcYfHp9fJTH7juImew94DWz_tiKpF4xgA",
+  authDomain: "abo-eldhab-group.firebaseapp.com",
+  projectId: "abo-eldhab-group",
+  storageBucket: "abo-eldhab-group.firebasestorage.app",
+  messagingSenderId: "454135959190",
+  appId: "1:454135959190:web:902ad852fe52923d58fcb7",
+  measurementId: "G-8XS0FZDL40"
+};
+
+const app = initializeApp(firebaseConfig);
+try { getAnalytics(app); } catch(e) {}
+const auth = getAuth(app);
+const firestore = getFirestore(app);
+const stateRef = doc(firestore, "installmentApp", "state");
+let currentUser = null;
+let readyForSync = false;
+let applyingRemote = false;
+let syncTimer = null;
+
+window.addEventListener('error',function(e){ if(e && e.message && /firebase|gstatic|module/i.test(e.message)){ setTimeout(function(){ setFirebaseStatus('err','تعذر تحميل مكونات فيرباس — افتح الموقع عبر HTTP وليس file://'); },50); } });
+
+function setFirebaseStatus(type, text){
+  const el=document.getElementById('firebaseStatus');
+  if(!el) return;
+  el.className='firebase-status'+(type?' '+type:'');
+  const t=el.querySelector('.status-text');
+  if(t) t.textContent=text;
+}
+
+async function startFirebase(){
+  try{
+    setFirebaseStatus('', 'جاري تسجيل الدخول إلى فيرباس...');
+    await signInAnonymously(auth);
+  }catch(error){
+    console.error('Firebase Auth error:', error);
+    setFirebaseStatus('local', 'الوضع المحلي — فعّل Anonymous Authentication');
+  }
+}
+
+onAuthStateChanged(auth, async (user)=>{
+  currentUser=user;
+  if(!user){ readyForSync=false; return; }
+  setFirebaseStatus('', 'جاري تحميل بيانات النظام من فيرباس...');
+  try{
+    const snap=await getDoc(stateRef);
+    if(snap.exists()){
+      applyingRemote=true;
+      const remote=snap.data().db;
+      if(remote && remote.customers && remote.contracts){
+        window.setAppDb(remote);
+        localStorage.setItem('installment_local_v1', JSON.stringify(remote));
+        if(typeof updateCustomerStatuses==='function') updateCustomerStatuses();
+        if(typeof render==='function') render();
+      }
+      applyingRemote=false;
+    }else{
+      await setDoc(stateRef,{db:window.getAppDb(),ownerUid:user.uid,updatedAt:new Date().toISOString()});
+    }
+    readyForSync=true;
+    setFirebaseStatus('ok','متصل بفيرباس — البيانات محفوظة سحابيًا');
+    onSnapshot(stateRef,(snapshot)=>{
+      if(!snapshot.exists()) return;
+      const data=snapshot.data();
+      if(!data.db || applyingRemote) return;
+      const localStamp=localStorage.getItem('installment_last_sync');
+      const remoteStamp=data.updatedAt||'';
+      if(!localStamp || remoteStamp>=localStamp){
+        applyingRemote=true;
+        window.setAppDb(data.db);
+        localStorage.setItem('installment_local_v1',JSON.stringify(data.db));
+        localStorage.setItem('installment_last_sync',remoteStamp);
+        if(typeof updateCustomerStatuses==='function') updateCustomerStatuses();
+        if(typeof render==='function') render();
+        applyingRemote=false;
+      }
+    },(error)=>{
+      console.error('Firestore listener error:',error);
+      setFirebaseStatus('err','خطأ في مزامنة فيرباس');
+    });
+  }catch(error){
+    console.error('Firestore load error:',error);
+    readyForSync=false;
+    setFirebaseStatus('err','تعذر الاتصال بقاعدة بيانات فيرباس');
+  }
+});
+
+window.firebaseSyncSave=function(data){
+  if(!currentUser || !readyForSync || applyingRemote) return;
+  clearTimeout(syncTimer);
+  syncTimer=setTimeout(async()=>{
+    const stamp=new Date().toISOString();
+    try{
+      await setDoc(stateRef,{db:data,ownerUid:currentUser.uid,updatedAt:stamp});
+      localStorage.setItem('installment_last_sync',stamp);
+      setFirebaseStatus('ok','متصل بفيرباس — تم حفظ آخر تعديل');
+    }catch(error){
+      console.error('Firestore save error:',error);
+      setFirebaseStatus('err','تعذر حفظ التعديل على فيرباس');
+    }
+  },250);
+};
+startFirebase();
+</script>
+</body></html>
