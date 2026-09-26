@@ -19,6 +19,44 @@ h1,h2,h3{letter-spacing:-.2px}
 <style>
 .firebase-status{display:inline-flex;align-items:center;gap:8px;font-size:13px;margin-top:6px;color:#666}.firebase-status .dot{width:9px;height:9px;border-radius:50%;background:#999;display:inline-block}.firebase-status.ok{color:#176b3a}.firebase-status.ok .dot{background:#1f9d55}.firebase-status.err{color:#a51d2d}.firebase-status.err .dot{background:#c92a2a}.firebase-status.local{color:#8a5a00}.firebase-status.local .dot{background:#d99a00}
 </style>
+
+<style>
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+body{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+@media(max-width:700px){
+  .app{display:block;min-height:100vh;width:100%}
+  .side{position:fixed;right:0;left:0;top:auto;bottom:0;width:100%;height:68px;padding:5px 6px;overflow-x:auto;overflow-y:hidden;z-index:50;border-top:1px solid #2a2a2a}
+  .brand-logo{display:none}
+  .nav{display:flex;align-items:stretch;gap:4px;width:max-content;min-width:100%}
+  .nav button{font-size:11px!important;text-align:center!important;min-width:78px;width:auto;margin:0;padding:8px 6px;border-radius:9px;white-space:nowrap}
+  .nav button:before{display:none!important}
+  .main{margin-right:0;width:100%;max-width:100%;padding:12px 10px 82px}
+  .brand-strip{margin:-12px -10px 14px}
+  .top{gap:8px;margin-bottom:12px}
+  .title h1{font-size:21px}
+  .title p{font-size:12px}
+  .firebase-status{font-size:11px;max-width:100%;line-height:1.5}
+  .actions{width:100%}
+  .actions .btn{flex:1 1 auto;min-height:42px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .card{padding:12px;border-radius:11px}
+  .kpi .num{font-size:19px;overflow-wrap:anywhere}
+  .kpi .label{font-size:11px}
+  .panel{margin-top:10px}
+  .panel h2{font-size:16px}
+  .form-grid{grid-template-columns:1fr;gap:9px}
+  .modal{padding:8px;align-items:flex-end}
+  .modalbox{max-height:92vh;border-radius:15px 15px 0 0;padding:14px;width:100%}
+  .table-wrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .table{min-width:720px}
+  .search{font-size:16px}
+  input,select,textarea{font-size:16px!important}
+}
+@media(max-width:380px){
+  .grid{grid-template-columns:1fr}
+  .nav button{min-width:72px;font-size:10px!important}
+}
+</style>
 </head>
 <body>
 <div class="app">
@@ -32,9 +70,49 @@ h1,h2,h3{letter-spacing:-.2px}
 <div class="modal" id="modal"><div class="modalbox"><div class="modalhead"><h3 id="modalTitle"></h3><button class="close" onclick="closeModal()">إغلاق</button></div><div id="modalBody"></div></div></div>
 <input type="file" id="restoreInput" accept="application/json" style="display:none">
 <script>
-const seed={customers:[{"code": "C-0001", "name": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "phone": null, "address": null, "firstDate": "2026-10-08T00:00:00", "classification": "A", "status": "نشط", "notes": null}, {"code": "C-0002", "name": "محمد (تابع نصار محشي)", "phone": null, "address": null, "firstDate": "2026-10-09T00:00:00", "classification": "A", "status": "نشط", "notes": null}, {"code": "C-0003", "name": "إبراهيم (تابع عبدالرحمن جار العمارة)", "phone": null, "address": null, "firstDate": "2026-10-10T00:00:00", "classification": "A", "status": "نشط", "notes": null}, {"code": "C-0004", "name": "عادل الدريني", "phone": null, "address": null, "firstDate": "2026-10-14T00:00:00", "classification": "A", "status": "نشط", "notes": null}],contracts:[{"id": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "product": "بيض + ديب فريزر", "cost": 200000, "downPayment": 0, "net": 200000, "months": 16, "profitRate": 60.00000000000001, "total": 320000, "remaining": 300000, "monthly": 20000, "startDate": "2026-10-01T00:00:00", "firstDue": "2026-10-08T00:00:00", "status": "نشط", "notes": null}, {"id": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "product": "إسكوتر", "cost": 40000, "downPayment": 0, "net": 40000, "months": 12, "profitRate": 37.5, "total": 55000, "remaining": 50400, "monthly": 4600, "startDate": "2026-10-01T00:00:00", "firstDue": "2026-10-09T00:00:00", "status": "نشط", "notes": null}, {"id": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "product": "موتسيكل بوكسر", "cost": 43000, "downPayment": 15000, "net": 28000, "months": 15, "profitRate": 142.85714285714283, "total": 68000, "remaining": 64250, "monthly": 3750, "startDate": "2026-10-01T00:00:00", "firstDue": "2026-10-10T00:00:00", "status": "نشط", "notes": null}, {"id": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "product": "2 تكييف", "cost": 170000, "downPayment": 0, "net": 170000, "months": 12, "profitRate": 47.058823529411775, "total": 250000, "remaining": 229200, "monthly": 20800, "startDate": "2026-10-01T00:00:00", "firstDue": "2026-10-14T00:00:00", "status": "نشط", "notes": null}],installments:[{"id": "INS-00001", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 1, "dueDate": "2026-10-08T00:00:00", "amount": 20000, "paid": 20000, "remaining": 0, "daysLate": 0, "status": "مدفوع"}, {"id": "INS-00002", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 2, "dueDate": "2026-11-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00003", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 3, "dueDate": "2026-12-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00004", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 4, "dueDate": "2027-01-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00005", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 5, "dueDate": "2027-02-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00006", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 6, "dueDate": "2027-03-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00007", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 7, "dueDate": "2027-04-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00008", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 8, "dueDate": "2027-05-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00009", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 9, "dueDate": "2027-06-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00010", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 10, "dueDate": "2027-07-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00011", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 11, "dueDate": "2027-08-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00012", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 12, "dueDate": "2027-09-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00013", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 13, "dueDate": "2027-10-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00014", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 14, "dueDate": "2027-11-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00015", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 15, "dueDate": "2027-12-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00016", "contractId": "CON-0001", "customerCode": "C-0001", "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "number": 16, "dueDate": "2028-01-08T00:00:00", "amount": 20000, "paid": 0, "remaining": 20000, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00017", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 1, "dueDate": "2026-10-09T00:00:00", "amount": 4600, "paid": 4600, "remaining": 0, "daysLate": 0, "status": "مدفوع"}, {"id": "INS-00018", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 2, "dueDate": "2026-11-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00019", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 3, "dueDate": "2026-12-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00020", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 4, "dueDate": "2027-01-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00021", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 5, "dueDate": "2027-02-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00022", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 6, "dueDate": "2027-03-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00023", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 7, "dueDate": "2027-04-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00024", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 8, "dueDate": "2027-05-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00025", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 9, "dueDate": "2027-06-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00026", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 10, "dueDate": "2027-07-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00027", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 11, "dueDate": "2027-08-09T00:00:00", "amount": 4600, "paid": 0, "remaining": 4600, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00028", "contractId": "CON-0002", "customerCode": "C-0002", "customerName": "محمد (تابع نصار محشي)", "number": 12, "dueDate": "2027-09-09T00:00:00", "amount": 4400, "paid": 0, "remaining": 4400, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00029", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 1, "dueDate": "2026-10-10T00:00:00", "amount": 3750, "paid": 3750, "remaining": 0, "daysLate": 0, "status": "مدفوع"}, {"id": "INS-00030", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 2, "dueDate": "2026-11-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00031", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 3, "dueDate": "2026-12-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00032", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 4, "dueDate": "2027-01-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00033", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 5, "dueDate": "2027-02-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00034", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 6, "dueDate": "2027-03-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00035", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 7, "dueDate": "2027-04-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00036", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 8, "dueDate": "2027-05-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00037", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 9, "dueDate": "2027-06-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00038", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 10, "dueDate": "2027-07-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00039", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 11, "dueDate": "2027-08-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00040", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 12, "dueDate": "2027-09-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00041", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 13, "dueDate": "2027-10-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00042", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 14, "dueDate": "2027-11-10T00:00:00", "amount": 3750, "paid": 0, "remaining": 3750, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00043", "contractId": "CON-0003", "customerCode": "C-0003", "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "number": 15, "dueDate": "2027-12-10T00:00:00", "amount": 15500, "paid": 0, "remaining": 15500, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00044", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 1, "dueDate": "2026-10-14T00:00:00", "amount": 20800, "paid": 20800, "remaining": 0, "daysLate": 0, "status": "مدفوع"}, {"id": "INS-00045", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 2, "dueDate": "2026-11-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00046", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 3, "dueDate": "2026-12-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00047", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 4, "dueDate": "2027-01-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00048", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 5, "dueDate": "2027-02-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00049", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 6, "dueDate": "2027-03-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00050", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 7, "dueDate": "2027-04-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00051", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 8, "dueDate": "2027-05-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00052", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 9, "dueDate": "2027-06-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00053", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 10, "dueDate": "2027-07-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00054", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 11, "dueDate": "2027-08-14T00:00:00", "amount": 20800, "paid": 0, "remaining": 20800, "daysLate": 0, "status": "مستحق"}, {"id": "INS-00055", "contractId": "CON-0004", "customerCode": "C-0004", "customerName": "عادل الدريني", "number": 12, "dueDate": "2027-09-14T00:00:00", "amount": 21200, "paid": 0, "remaining": 21200, "daysLate": 0, "status": "مستحق"}],payments:[{"id": "PAY-00001", "date": "2026-10-08T00:00:00", "customerCode": "C-0001", "contractId": "CON-0001", "installmentNumber": 1, "customerName": "عبدالكريم فتحي عبدالعظيم (تابع الشيخ عبدالرحمن)", "amount": 20000, "method": "نقدي", "by": null, "notes": "مثال تحصيل القسط الأول"}, {"id": "PAY-00002", "date": "2026-10-09T00:00:00", "customerCode": "C-0002", "contractId": "CON-0002", "installmentNumber": 1, "customerName": "محمد (تابع نصار محشي)", "amount": 4600, "method": "نقدي", "by": null, "notes": "مثال تحصيل القسط الأول"}, {"id": "PAY-00003", "date": "2026-10-10T00:00:00", "customerCode": "C-0003", "contractId": "CON-0003", "installmentNumber": 1, "customerName": "إبراهيم (تابع عبدالرحمن جار العمارة)", "amount": 3750, "method": "نقدي", "by": null, "notes": "مثال تحصيل القسط الأول"}, {"id": "PAY-00004", "date": "2026-10-14T00:00:00", "customerCode": "C-0004", "contractId": "CON-0004", "installmentNumber": 1, "customerName": "عادل الدريني", "amount": 20800, "method": "نقدي", "by": null, "notes": "مثال تحصيل القسط الأول"}],expenses:[],capital:[{"id": "CAP-00001", "date": "2026-10-01T00:00:00", "type": "رأس مال افتتاحي", "direction": "داخل", "amount": 0, "description": "أدخل رأس المال الافتتاحي عند الحاجة", "balance": 0}]};
-const KEY='installment_local_v1';
-let db=JSON.parse(localStorage.getItem(KEY)||'null')||seed;
+const seed={customers:[],contracts:[],installments:[],payments:[],expenses:[],capital:[]};
+const LOCAL_DB_KEY='bta3_el_kest_local_v2';
+const LOCAL_DIRTY_KEY='bta3_el_kest_local_dirty_v2';
+let db={...seed};
+
+function loadLocalDb(){
+  try{
+    // Migrate data saved by the previous Firebase/local version.
+    let raw=localStorage.getItem(LOCAL_DB_KEY);
+    let migrated=false;
+    if(!raw){
+      raw=localStorage.getItem('installment_local_v1');
+      migrated=!!raw;
+    }
+    if(!raw) return false;
+    const parsed=JSON.parse(raw);
+    if(parsed && Array.isArray(parsed.customers) && Array.isArray(parsed.contracts)){
+      db={
+        customers:Array.isArray(parsed.customers)?parsed.customers:[],
+        contracts:Array.isArray(parsed.contracts)?parsed.contracts:[],
+        installments:Array.isArray(parsed.installments)?parsed.installments:[],
+        payments:Array.isArray(parsed.payments)?parsed.payments:[],
+        expenses:Array.isArray(parsed.expenses)?parsed.expenses:[],
+        capital:Array.isArray(parsed.capital)?parsed.capital:[]
+      };
+      if(localStorage.getItem(LOCAL_DIRTY_KEY)===null || migrated){
+        localStorage.setItem(LOCAL_DIRTY_KEY,'1');
+      }
+      if(migrated){
+        localStorage.setItem(LOCAL_DB_KEY,JSON.stringify(db));
+      }
+      return true;
+    }
+  }catch(e){ console.warn('Local data could not be loaded:',e); }
+  return false;
+}
+
+function cacheLocalDb(){
+  try{ localStorage.setItem(LOCAL_DB_KEY,JSON.stringify(db)); }
+  catch(e){ console.warn('Local cache could not be saved:',e); }
+}
+
+loadLocalDb();
 window.getAppDb=()=>db; window.setAppDb=(next)=>{db=next};
 db.contracts=(db.contracts||[]).map(c=>({...c,collectorName:c.collectorName||'',notes:c.notes||''}));
 db.installments=(db.installments||[]).map(x=>({...x,collectorName:x.collectorName||'',notes:x.notes||''}));
@@ -78,7 +156,13 @@ function updateCustomerStatuses(){
   });
 }
 
-function save(){updateCustomerStatuses();localStorage.setItem(KEY,JSON.stringify(db)); render(); if(window.firebaseSyncSave) window.firebaseSyncSave(db)}
+function save(){
+  updateCustomerStatuses();
+  cacheLocalDb();
+  try{localStorage.setItem(LOCAL_DIRTY_KEY,'1')}catch(e){}
+  render();
+  if(window.firebaseSyncSave) window.firebaseSyncSave(db);
+}
 function uid(prefix){return prefix+'-'+String(Date.now()).slice(-7)}
 function nav(){let items=[['dashboard','الرئيسية'],['customers','العملاء'],['contracts','العقود'],['installments','جدول الأقساط'],['payments','التحصيل اليومي'],['expenses','المصاريف'],['capital','حركة رأس المال'],['reports','التقارير'],['customerLookup','كود العميل']];document.getElementById('nav').innerHTML=items.map(x=>`<button class="${page===x[0]?'active':''}" onclick="go('${x[0]}')">${x[1]}</button>`).join('')}
 function go(p){page=p;nav();render()}
@@ -205,11 +289,11 @@ function contractTable(rows,withSelect=false){
 function installments(){return `<div class="card"><input class="search" placeholder="ابحث بالعميل أو العقد" oninput="filterTable(this,'instTable')"><div id="instTable">${instTable(db.installments)}</div></div>`}
 function instTable(rows){
   return `<div class="table-wrap"><table class="table"><thead><tr>
-    <th>العقد</th><th>العميل</th><th>#</th><th>الاستحقاق</th><th>قيمة القسط</th><th>المدفوع</th><th>المتبقي</th><th>التأخير</th><th>اسم المحصل</th><th>ملاحظات</th><th>الحالة</th>
+    <th>العقد</th><th>العميل</th><th>#</th><th>الاستحقاق</th><th>قيمة القسط</th><th>المدفوع</th><th>المتبقي</th><th>التأخير</th><th>اسم المحصل</th><th>ملاحظات</th><th>الحالة</th><th>إجراءات</th>
   </tr></thead><tbody>${rows.map(x=>{
     let ps=db.payments.filter(p=>p.contractId===x.contractId&&Number(p.installmentNumber)===Number(x.number));
     let last=ps[ps.length-1];
-    return `<tr><td>${x.contractId}</td><td>${x.customerName}</td><td>${x.number}</td><td>${date(x.dueDate)}</td><td>${money(x.amount)}</td><td>${money(x.paid)}</td><td>${money(x.remaining)}</td><td>${x.daysLate||0}</td><td>${last?.by||x.collectorName||''}</td><td>${last?.notes||x.notes||''}</td><td><span class="badge ${x.status==='مدفوع'?'':'warn'}">${x.status}</span></td></tr>`;
+    return `<tr><td>${x.contractId}</td><td>${x.customerName}</td><td>${x.number}</td><td>${date(x.dueDate)}</td><td>${money(x.amount)}</td><td>${money(x.paid)}</td><td>${money(x.remaining)}</td><td>${x.daysLate||0}</td><td>${last?.by||x.collectorName||''}</td><td>${last?.notes||x.notes||''}</td><td><span class="badge ${x.status==='مدفوع'?'':'warn'}">${x.status}</span></td><td><div class="row-actions"><button class="btn mini" onclick="installmentForm('${x.id}')">تعديل</button><button class="btn mini danger" onclick="delInstallment('${x.id}')">حذف</button></div></td></tr>`;
   }).join('')}</tbody></table></div>`;
 }
 function payments(){
@@ -387,12 +471,12 @@ function paymentTable(rows){
     <th>التاريخ</th><th>العميل</th><th>العقد</th><th>القسط</th><th>المبلغ</th><th>الطريقة</th><th>اسم المحصل</th><th>ملاحظات</th><th>إجراء</th>
   </tr></thead><tbody>${rows.map(x=>`<tr>
     <td>${date(x.date)}</td><td>${x.customerName}</td><td>${x.contractId}</td><td>${x.installmentNumber}</td><td>${money(x.amount)}</td><td>${x.method||''}</td><td>${x.by||''}</td><td>${x.notes||''}</td>
-    <td><button class="btn mini danger" onclick="delPayment('${x.id}')">حذف</button></td>
+    <td><div class="row-actions"><button class="btn mini" onclick="paymentForm('', '', '${x.id}')">تعديل</button><button class="btn mini danger" onclick="delPayment('${x.id}')">حذف</button></div></td>
   </tr>`).join('')}</tbody></table></div>`;
 }
 function expenses(){return `<div class="card"><div class="actions" style="margin-bottom:10px"><button class="btn primary" onclick="expenseForm()">+ إضافة مصروف</button></div>${simpleTable(db.expenses,['date','type','description','amount','method','notes'],['التاريخ','نوع المصروف','البيان','المبلغ','طريقة الدفع','ملاحظات'],'expense')}</div>`}
 function capital(){return `<div class="card"><div class="actions" style="margin-bottom:10px"><button class="btn primary" onclick="capitalForm()">+ إضافة حركة</button></div>${simpleTable(db.capital,['date','type','direction','amount','description','balance'],['التاريخ','نوع الحركة','داخل/خارج','المبلغ','البيان','الرصيد'],'capital')}</div>`}
-function simpleTable(rows,keys,heads,type){if(!rows.length)return '<div class="empty">لا توجد بيانات</div>';return `<div class="table-wrap"><table class="table"><thead><tr>${heads.map(h=>`<th>${h}</th>`).join('')}<th>إجراء</th></tr></thead><tbody>${rows.map(x=>`<tr>${keys.map(k=>`<td>${k==='date'||k==='balance'? (k==='balance'?money(x[k]):date(x[k])) : k==='amount'?money(x[k]):(x[k]??'')}</td>`).join('')}<td><button class="btn mini danger" onclick="delRow('${type}','${x.id}')">حذف</button></td></tr>`).join('')}</tbody></table></div>`}
+function simpleTable(rows,keys,heads,type){if(!rows.length)return '<div class="empty">لا توجد بيانات</div>';return `<div class="table-wrap"><table class="table"><thead><tr>${heads.map(h=>`<th>${h}</th>`).join('')}<th>إجراءات</th></tr></thead><tbody>${rows.map(x=>`<tr>${keys.map(k=>`<td>${k==='date'||k==='balance'? (k==='balance'?money(x[k]):date(x[k])) : k==='amount'?money(x[k]):(x[k]??'')}</td>`).join('')}<td><div class="row-actions"><button class="btn mini" onclick="editRow('${type}','${x.id}')">تعديل</button><button class="btn mini danger" onclick="delRow('${type}','${x.id}')">حذف</button></div></td></tr>`).join('')}</tbody></table></div>`}
 function reports(){let t=totals(), paidByMethod={};db.payments.forEach(x=>paidByMethod[x.method||'غير محدد']=(paidByMethod[x.method||'غير محدد']||0)+Number(x.amount||0));let late=db.installments.filter(x=>x.status!=='مدفوع'&&Number(x.daysLate)>0);return `<div class="grid"><div class="card kpi"><div class="label">نسبة التحصيل من قيمة العقود</div><div class="num">${t.contractTotal?(t.paid/t.contractTotal*100).toFixed(1):0}%</div></div><div class="card kpi"><div class="label">نسبة المتبقي</div><div class="num">${t.contractTotal?(t.remaining/t.contractTotal*100).toFixed(1):0}%</div></div><div class="card kpi"><div class="label">عدد الأقساط المتأخرة</div><div class="num">${late.length}</div></div><div class="card kpi"><div class="label">إجمالي المصروفات</div><div class="num">${money(t.exp)}</div></div></div><div class="card panel"><h2>التحصيل حسب طريقة الدفع</h2>${Object.entries(paidByMethod).map(([k,v])=>`<p><b>${k}</b> — ${money(v)}</p>`).join('')||'<div class="empty">لا توجد بيانات</div>'}</div><div class="card panel"><h2>الأقساط المتأخرة</h2>${instTable(late)}</div>`}
 function filterTable(input,id){let q=input.value.trim().toLowerCase();let rows=document.querySelectorAll('#'+id+' tbody tr');rows.forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?'':'none')}
 function openModal(title,body){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBody').innerHTML=body;document.getElementById('modal').classList.add('show')}
@@ -487,15 +571,23 @@ function saveContract(e,old){
 }
 function generateInstallments(c){let first=new Date(c.firstDue||c.startDate);for(let i=1;i<=c.months;i++){let d=new Date(first);d.setMonth(d.getMonth()+i-1);let amount=i===c.months?Math.round((c.total-c.monthly*(c.months-1))*100)/100:c.monthly;db.installments.push({id:uid('INS'),contractId:c.id,customerCode:c.customerCode,customerName:c.customerName,number:i,dueDate:d.toISOString().slice(0,10),amount,paid:0,remaining:amount,daysLate:0,collectorName:c.collectorName||'',notes:c.notes||'',status:'مستحق'})}}
 function delContract(id){if(!confirm('حذف العقد وجدول أقساطه؟'))return;db.contracts=db.contracts.filter(x=>x.id!==id);db.installments=db.installments.filter(x=>x.contractId!==id);save()}
-function paymentForm(selectedContractId='',selectedInstallmentId=''){
-  let opts=db.contracts.map(c=>`<option value="${c.id}" ${c.id===selectedContractId?'selected':''}>${c.id} — ${c.customerName} — متبقي ${money(c.remaining)}</option>`).join('');
-  openModal('تسجيل تحصيل',`<form onsubmit="savePayment(event)"><div class="form-grid"><div class="field"><label>العقد</label><select name="contractId" required onchange="fillInst(this.value)">${opts}</select></div><div class="field"><label>القسط</label><select name="installmentId" id="payInst" required></select></div>${field('التاريخ','date',iso(new Date()),'date')}${field('المبلغ','amount',0,'number')}${paymentMethodSelect('method','نقدي','طريقة الدفع')}${field('اسم المحصل','by')}${field('ملاحظات التحصيل','notes')}</div><div class="notice">طريقة الدفع المتاحة: نقدي — إنستا — فودفون كاش.</div><button class="btn primary" style="margin-top:15px">حفظ التحصيل</button></form>`);
-  const cid=selectedContractId || (db.contracts[0]&&db.contracts[0].id);
+function paymentForm(selectedContractId='',selectedInstallmentId='',editId=''){
+  const editing=!!editId;
+  const existing=editing?db.payments.find(x=>x.id===editId):null;
+  if(editing && !existing){alert('التحصيل غير موجود');return;}
+  const selectedCid=existing?.contractId||selectedContractId||'';
+  let opts=db.contracts.map(c=>`<option value="${c.id}" ${c.id===selectedCid?'selected':''}>${c.id} — ${c.customerName} — متبقي ${money(c.remaining)}</option>`).join('');
+  openModal(editing?'تعديل التحصيل':'تسجيل تحصيل',`<form onsubmit="savePayment(event,'${editId||''}')"><div class="form-grid"><div class="field"><label>العقد</label><select name="contractId" required onchange="fillInst(this.value)" ${editing?'disabled':''}>${opts}</select>${editing?`<input type="hidden" name="contractId" value="${existing.contractId}">`:''}</div><div class="field"><label>القسط</label><select name="installmentId" id="payInst" required ${editing?'disabled':''}></select>${editing?`<input type="hidden" name="installmentId" value="${existing.contractId}__${existing.installmentNumber}">`:''}</div>${field('التاريخ','date',iso(existing?.date||new Date()),'date')}${field('المبلغ','amount',existing?.amount||0,'number')}${paymentMethodSelect('method',existing?.method||'نقدي','طريقة الدفع')}${field('اسم المحصل','by',existing?.by||'')}${field('ملاحظات التحصيل','notes',existing?.notes||'')}</div><div class="notice">${editing?'يمكن تعديل بيانات التحصيل. سيتم إعادة احتساب المتبقي تلقائيًا.':'طريقة الدفع المتاحة: نقدي — إنستا — فودفون كاش.'}</div><button class="btn primary" style="margin-top:15px">${editing?'حفظ التعديل':'حفظ التحصيل'}</button></form>`);
+  const cid=selectedCid || (db.contracts[0]&&db.contracts[0].id);
   if(cid){
-    fillInst(cid);
-    if(selectedInstallmentId){
-      const el=document.getElementById('payInst');
-      if(el){
+    fillInst(cid, editId);
+    const el=document.getElementById('payInst');
+    if(el){
+      if(editing){
+        const match=[...el.options].find(o=>o.textContent.includes(`القسط ${existing.installmentNumber} —`));
+        if(match)el.value=match.value;
+        el.value=existing.installmentId||el.value;
+      }else if(selectedInstallmentId){
         el.value=selectedInstallmentId;
         const ins=db.installments.find(x=>x.id===selectedInstallmentId);
         const amount=document.querySelector('#modalBody input[name="amount"]');
@@ -504,14 +596,69 @@ function paymentForm(selectedContractId='',selectedInstallmentId=''){
     }
   }
 }
-function fillInst(cid){let list=db.installments.filter(x=>x.contractId===cid&&x.remaining>0);let el=document.getElementById('payInst');if(!el)return;el.innerHTML=list.map(x=>`<option value="${x.id}">القسط ${x.number} — ${date(x.dueDate)} — ${money(x.remaining)}</option>`).join('');}
-function savePayment(e){e.preventDefault();let f=new FormData(e.target),ins=db.installments.find(x=>x.id===f.get('installmentId')),c=db.contracts.find(x=>x.id===f.get('contractId')),amt=Math.min(+f.get('amount')||0,ins.remaining);if(!amt)return alert('أدخل مبلغًا صحيحًا');let p={id:uid('PAY'),date:f.get('date'),customerCode:c.customerCode,contractId:c.id,installmentNumber:ins.number,customerName:c.customerName,amount:amt,method:f.get('method'),by:f.get('by'),notes:f.get('notes')};db.payments.push(p);ins.paid+=amt;ins.remaining=Math.max(0,ins.amount-ins.paid);ins.status=ins.remaining===0?'مدفوع':'مدفوع جزئي';c.remaining=Math.max(0,c.remaining-amt);if(c.remaining===0)c.status='مكتمل';closeModal();save()}
+function fillInst(cid,includePaymentId=''){let list=db.installments.filter(x=>x.contractId===cid&&(x.remaining>0 || (includePaymentId && db.payments.some(p=>p.id===includePaymentId&&p.contractId===cid&&Number(p.installmentNumber)===Number(x.number)))));let el=document.getElementById('payInst');if(!el)return;el.innerHTML=list.map(x=>`<option value="${x.id}">القسط ${x.number} — ${date(x.dueDate)} — ${money(x.remaining)}</option>`).join('');}
+function savePayment(e,old=''){
+  e.preventDefault();
+  let f=new FormData(e.target);
+  if(old){
+    const p=db.payments.find(x=>x.id===old);
+    if(!p)return alert('التحصيل غير موجود');
+    const oldIns=db.installments.find(x=>x.contractId===p.contractId&&Number(x.number)===Number(p.installmentNumber));
+    const oldC=db.contracts.find(x=>x.id===p.contractId);
+    if(oldIns){oldIns.paid=Math.max(0,Number(oldIns.paid||0)-Number(p.amount||0));oldIns.remaining=Math.max(0,Number(oldIns.amount||0)-oldIns.paid);oldIns.status=oldIns.remaining===0?'مدفوع':oldIns.paid>0?'مدفوع جزئي':'مستحق';}
+    if(oldC)oldC.remaining=Math.max(0,Number(oldC.remaining||0)+Number(p.amount||0));
+    const newInstallmentId=String(f.get('installmentId')||'').includes('__')?null:f.get('installmentId');
+    const ins=newInstallmentId?db.installments.find(x=>x.id===newInstallmentId):oldIns;
+    const c=db.contracts.find(x=>x.id===f.get('contractId'))||oldC;
+    if(!ins||!c)return alert('تعذر تحديد العقد أو القسط');
+    const available=Number(ins.remaining||0)+(ins===oldIns?Number(p.amount||0):0);
+    const amt=Math.min(Number(f.get('amount'))||0,available);
+    if(!amt)return alert('أدخل مبلغًا صحيحًا');
+    p.date=f.get('date');p.customerCode=c.customerCode;p.contractId=c.id;p.installmentNumber=ins.number;p.customerName=c.customerName;p.amount=amt;p.method=f.get('method');p.by=f.get('by');p.notes=f.get('notes');
+    ins.paid=Number(ins.paid||0)+amt;ins.remaining=Math.max(0,Number(ins.amount||0)-ins.paid);ins.status=ins.remaining===0?'مدفوع':ins.paid>0?'مدفوع جزئي':'مستحق';
+    c.remaining=Math.max(0,Number(c.remaining||0)-amt);if(c.remaining===0)c.status='مكتمل';
+    closeModal();save();return;
+  }
+  let ins=db.installments.find(x=>x.id===f.get('installmentId')),c=db.contracts.find(x=>x.id===f.get('contractId'));
+  if(!ins||!c)return alert('اختر العقد والقسط');
+  let amt=Math.min(+f.get('amount')||0,ins.remaining);if(!amt)return alert('أدخل مبلغًا صحيحًا');
+  let p={id:uid('PAY'),date:f.get('date'),customerCode:c.customerCode,contractId:c.id,installmentNumber:ins.number,customerName:c.customerName,amount:amt,method:f.get('method'),by:f.get('by'),notes:f.get('notes')};db.payments.push(p);ins.paid+=amt;ins.remaining=Math.max(0,ins.amount-ins.paid);ins.status=ins.remaining===0?'مدفوع':'مدفوع جزئي';c.remaining=Math.max(0,c.remaining-amt);if(c.remaining===0)c.status='مكتمل';closeModal();save();
+}
+function installmentForm(id){
+  const x=db.installments.find(i=>i.id===id);
+  if(!x)return alert('القسط غير موجود');
+  const ps=db.payments.filter(p=>p.contractId===x.contractId&&Number(p.installmentNumber)===Number(x.number));
+  openModal('تعديل القسط',`<form onsubmit="saveInstallment(event,'${id}')"><div class="form-grid">${field('تاريخ الاستحقاق','dueDate',iso(x.dueDate),'date')}${field('قيمة القسط','amount',x.amount||0,'number')}${field('اسم المحصل','collectorName',x.collectorName||'')}<div class="field" style="grid-column:1/-1"><label>ملاحظات</label><textarea name="notes">${x.notes||''}</textarea></div></div><div class="notice">المدفوع حاليًا: <b>${money(x.paid||0)}</b>. سيتم إعادة احتساب المتبقي والحالة، وكذلك إجمالي العقد، بعد التعديل.</div><button class="btn primary">حفظ التعديل</button></form>`);
+}
+function saveInstallment(e,id){
+  e.preventDefault();
+  const x=db.installments.find(i=>i.id===id);if(!x)return;
+  const f=new FormData(e.target);
+  const amount=Math.max(0,Number(f.get('amount'))||0);
+  if(amount<=0)return alert('قيمة القسط يجب أن تكون أكبر من صفر');
+  if(amount<Number(x.paid||0))return alert('لا يمكن أن تكون قيمة القسط أقل من المبلغ المدفوع بالفعل.');
+  x.dueDate=f.get('dueDate');x.amount=amount;x.collectorName=f.get('collectorName')||'';x.notes=f.get('notes')||'';x.remaining=Math.max(0,amount-Number(x.paid||0));x.status=x.remaining===0?'مدفوع':Number(x.paid||0)>0?'مدفوع جزئي':'مستحق';
+  const c=db.contracts.find(c=>c.id===x.contractId);
+  if(c){const list=db.installments.filter(i=>i.contractId===c.id);c.total=list.reduce((a,i)=>a+Number(i.amount||0),0);c.remaining=Math.max(0,c.total-list.reduce((a,i)=>a+Number(i.paid||0),0));c.monthly=c.months?Math.round(c.total/c.months*100)/100:c.total;c.status=c.remaining===0?'مكتمل':'نشط';}
+  closeModal();save();
+}
+function delInstallment(id){
+  const x=db.installments.find(i=>i.id===id);if(!x)return;
+  if(db.payments.some(p=>p.contractId===x.contractId&&Number(p.installmentNumber)===Number(x.number)))return alert('لا يمكن حذف قسط عليه تحصيلات. احذف/عدّل التحصيلات المرتبطة به أولًا.');
+  if(!confirm('حذف هذا القسط؟ سيتم إعادة احتساب إجمالي العقد والمتبقي.'))return;
+  db.installments=db.installments.filter(i=>i.id!==id);
+  const c=db.contracts.find(c=>c.id===x.contractId);
+  if(c){const list=db.installments.filter(i=>i.contractId===c.id);c.total=list.reduce((a,i)=>a+Number(i.amount||0),0);c.remaining=Math.max(0,c.total-list.reduce((a,i)=>a+Number(i.paid||0),0));c.monthly=c.months?Math.round(c.total/c.months*100)/100:c.total;c.status=c.remaining===0?'مكتمل':'نشط';}
+  save();
+}
+
 function delPayment(id){let p=db.payments.find(x=>x.id===id);if(!p||!confirm('حذف التحصيل وإرجاع المبلغ للمتبقي؟'))return;let ins=db.installments.find(x=>x.contractId===p.contractId&&x.number===p.installmentNumber);let c=db.contracts.find(x=>x.id===p.contractId);if(ins){ins.paid=Math.max(0,ins.paid-p.amount);ins.remaining=ins.amount-ins.paid;ins.status=ins.remaining===0?'مدفوع':ins.paid>0?'مدفوع جزئي':'مستحق'}if(c)c.remaining+=p.amount;db.payments=db.payments.filter(x=>x.id!==id);save()}
-function expenseForm(){openModal('إضافة مصروف',`<form onsubmit="saveExpense(event)"><div class="form-grid">${field('التاريخ','date',iso(new Date()),'date')}${field('نوع المصروف','type')}${field('البيان','description')}${field('المبلغ','amount',0,'number')}${paymentMethodSelect('method','نقدي','طريقة الدفع')}${field('ملاحظات','notes')}</div><button class="btn primary" style="margin-top:15px">حفظ</button></form>`)}
-function saveExpense(e){e.preventDefault();let f=new FormData(e.target);db.expenses.push({id:uid('EXP'),date:f.get('date'),type:f.get('type'),description:f.get('description'),amount:+f.get('amount')||0,method:f.get('method'),notes:f.get('notes')});closeModal();save()}
-function capitalForm(){openModal('إضافة حركة رأس مال',`<form onsubmit="saveCapital(event)"><div class="form-grid">${field('التاريخ','date',iso(new Date()),'date')}${field('نوع الحركة','type')}${field('المبلغ','amount',0,'number')}<div class="field"><label>داخل/خارج</label><select name="direction"><option>داخل</option><option>خارج</option></select></div>${field('البيان','description')}</div><button class="btn primary" style="margin-top:15px">حفظ</button></form>`)}
-function saveCapital(e){e.preventDefault();let f=new FormData(e.target);db.capital.push({id:uid('CAP'),date:f.get('date'),type:f.get('type'),direction:f.get('direction'),amount:+f.get('amount')||0,description:f.get('description'),balance:0});let b=0;db.capital.forEach(x=>{b+=(x.direction==='داخل'?1:-1)*Number(x.amount||0);x.balance=b});closeModal();save()}
-function delRow(type,id){if(!confirm('حذف السجل؟'))return;let map={expense:'expenses',capital:'capital'};db[map[type]]=db[map[type]].filter(x=>x.id!==id);save()}
+function expenseForm(id=''){const x=id?db.expenses.find(e=>e.id===id):{};openModal(id?'تعديل مصروف':'إضافة مصروف',`<form onsubmit="saveExpense(event,'${id||''}')"><div class="form-grid">${field('التاريخ','date',iso(x.date||new Date()),'date')}${field('نوع المصروف','type',x.type||'')}${field('البيان','description',x.description||'')}${field('المبلغ','amount',x.amount||0,'number')}${paymentMethodSelect('method',x.method||'نقدي','طريقة الدفع')}${field('ملاحظات','notes',x.notes||'')}</div><button class="btn primary" style="margin-top:15px">${id?'حفظ التعديل':'حفظ'}</button></form>`)}
+function saveExpense(e,old=''){e.preventDefault();let f=new FormData(e.target),x={id:old||uid('EXP'),date:f.get('date'),type:f.get('type'),description:f.get('description'),amount:+f.get('amount')||0,method:f.get('method'),notes:f.get('notes')};if(old){let i=db.expenses.findIndex(e=>e.id===old);if(i>=0)db.expenses[i]=x}else db.expenses.push(x);closeModal();save()}
+function capitalForm(id=''){const x=id?db.capital.find(c=>c.id===id):{};openModal(id?'تعديل حركة رأس المال':'إضافة حركة رأس مال',`<form onsubmit="saveCapital(event,'${id||''}')"><div class="form-grid">${field('التاريخ','date',iso(x.date||new Date()),'date')}${field('نوع الحركة','type',x.type||'')}${field('المبلغ','amount',x.amount||0,'number')}<div class="field"><label>داخل/خارج</label><select name="direction"><option ${(!x.direction||x.direction==='داخل')?'selected':''}>داخل</option><option ${x.direction==='خارج'?'selected':''}>خارج</option></select></div>${field('البيان','description',x.description||'')}</div><button class="btn primary" style="margin-top:15px">${id?'حفظ التعديل':'حفظ'}</button></form>`)}
+function saveCapital(e,old=''){e.preventDefault();let f=new FormData(e.target),x={id:old||uid('CAP'),date:f.get('date'),type:f.get('type'),direction:f.get('direction'),amount:+f.get('amount')||0,description:f.get('description'),balance:0};if(old){let i=db.capital.findIndex(c=>c.id===old);if(i>=0)db.capital[i]=x}else db.capital.push(x);let b=0;db.capital.forEach(c=>{b+=(c.direction==='داخل'?1:-1)*Number(c.amount||0);c.balance=b});closeModal();save()}
+function editRow(type,id){if(type==='expense')return expenseForm(id);if(type==='capital')return capitalForm(id)}
+function delRow(type,id){if(!confirm('حذف السجل؟'))return;let map={expense:'expenses',capital:'capital'};db[map[type]]=db[map[type]].filter(x=>x.id!==id);if(type==='capital'){let b=0;db.capital.forEach(c=>{b+=(c.direction==='داخل'?1:-1)*Number(c.amount||0);c.balance=b})}save()}
 function openQuick(){if(page==='customers')customerForm();else if(page==='contracts')contractForm();else if(page==='payments')paymentForm();else if(page==='expenses')expenseForm();else if(page==='capital')capitalForm();else go('customers')}
 function backup(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='بتاع_القسط_نسخة_احتياطية_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href)}
 function restoreFile(){document.getElementById('restoreInput').click()}document.getElementById('restoreInput').onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.customers||!x.contracts)throw 0;if(confirm('استبدال البيانات الحالية بالنسخة؟')){db=x;save()}}catch{alert('ملف النسخة غير صالح')}};r.readAsText(f)};
@@ -538,14 +685,59 @@ try { getAnalytics(app); } catch(e) {}
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 const stateRef = doc(firestore, "installmentApp", "state");
+
 let currentUser = null;
 let readyForSync = false;
 let applyingRemote = false;
 let syncTimer = null;
+let snapshotStarted = false;
 
-window.addEventListener('error',function(e){ if(e && e.message && /firebase|gstatic|module/i.test(e.message)){ setTimeout(function(){ setFirebaseStatus('err','تعذر تحميل مكونات فيرباس — افتح الموقع عبر HTTP وليس file://'); },50); } });
+const LOCAL_DB_KEY='bta3_el_kest_local_v2';
+const LOCAL_DIRTY_KEY='bta3_el_kest_local_dirty_v2';
 
-function setFirebaseStatus(type, text){
+function hasLocalData(){
+  try{
+    const raw=localStorage.getItem(LOCAL_DB_KEY);
+    if(!raw) return false;
+    const x=JSON.parse(raw);
+    return !!(x && (
+      (Array.isArray(x.customers)&&x.customers.length) ||
+      (Array.isArray(x.contracts)&&x.contracts.length) ||
+      (Array.isArray(x.installments)&&x.installments.length) ||
+      (Array.isArray(x.payments)&&x.payments.length) ||
+      (Array.isArray(x.expenses)&&x.expenses.length) ||
+      (Array.isArray(x.capital)&&x.capital.length)
+    ));
+  }catch(e){ return false; }
+}
+
+function isLocalDirty(){
+  try{return localStorage.getItem(LOCAL_DIRTY_KEY)==='1'}catch(e){return false;}
+}
+function setLocalDirty(v){
+  try{localStorage.setItem(LOCAL_DIRTY_KEY,v?'1':'0')}catch(e){}
+}
+function saveLocalCache(data){
+  try{localStorage.setItem(LOCAL_DB_KEY,JSON.stringify(data))}catch(e){
+    console.warn('Local cache save failed:',e);
+  }
+}
+function loadLocalCache(){
+  try{
+    const raw=localStorage.getItem(LOCAL_DB_KEY);
+    return raw?JSON.parse(raw):null;
+  }catch(e){return null;}
+}
+
+window.addEventListener('error',function(e){
+  if(e && e.message && /firebase|gstatic|module/i.test(e.message)){
+    setTimeout(function(){
+      setFirebaseStatus('local','السحابة غير متاحة — تعمل البيانات محليًا مؤقتًا');
+    },50);
+  }
+});
+
+function setFirebaseStatus(type,text){
   const el=document.getElementById('firebaseStatus');
   if(!el) return;
   el.className='firebase-status'+(type?' '+type:'');
@@ -553,78 +745,135 @@ function setFirebaseStatus(type, text){
   if(t) t.textContent=text;
 }
 
+async function uploadLocalToCloud(reason='sync'){
+  if(!currentUser) return false;
+  const local=loadLocalCache() || window.getAppDb();
+  try{
+    setFirebaseStatus('', reason==='startup' ? 'جاري رفع البيانات المحلية إلى فيرباس...' : 'جاري حفظ التعديلات على فيرباس...');
+    const stamp=new Date().toISOString();
+    await setDoc(stateRef,{db:local,ownerUid:currentUser.uid,updatedAt:stamp});
+    setLocalDirty(false);
+    saveLocalCache(local);
+    window.setAppDb(local);
+    if(typeof updateCustomerStatuses==='function') updateCustomerStatuses();
+    if(typeof render==='function') render();
+    setFirebaseStatus('ok','متصل بفيرباس — تم رفع البيانات وحفظها سحابيًا');
+    return true;
+  }catch(error){
+    console.error('Firebase upload error:',error);
+    readyForSync=false;
+    setFirebaseStatus('local','السحابة غير متاحة — البيانات محفوظة محليًا مؤقتًا');
+    return false;
+  }
+}
+
 async function startFirebase(){
   try{
     setFirebaseStatus('', 'جاري تسجيل الدخول إلى فيرباس...');
     await signInAnonymously(auth);
   }catch(error){
-    console.error('Firebase Auth error:', error);
-    setFirebaseStatus('local', 'الوضع المحلي — فعّل Anonymous Authentication');
+    console.error('Firebase Auth error:',error);
+    readyForSync=false;
+    setFirebaseStatus('local','السحابة غير متاحة — البيانات محفوظة محليًا مؤقتًا');
   }
 }
 
 onAuthStateChanged(auth, async (user)=>{
   currentUser=user;
-  if(!user){ readyForSync=false; return; }
-  setFirebaseStatus('', 'جاري تحميل بيانات النظام من فيرباس...');
+  if(!user){
+    readyForSync=false;
+    setFirebaseStatus('local','السحابة غير متاحة — البيانات محفوظة محليًا مؤقتًا');
+    return;
+  }
+
+  setFirebaseStatus('', 'جاري فحص بيانات السحابة...');
   try{
     const snap=await getDoc(stateRef);
-    if(snap.exists()){
+    const localExists=hasLocalData();
+    const localDirty=isLocalDirty();
+
+    // If the user has local data waiting to be synced, upload it first.
+    // This makes local mode a real fallback and then migrates the data to cloud.
+    if(localExists && localDirty){
+      readyForSync=true;
+      await uploadLocalToCloud('startup');
+    }else if(snap.exists()){
       applyingRemote=true;
       const remote=snap.data().db;
       if(remote && remote.customers && remote.contracts){
         window.setAppDb(remote);
-        localStorage.setItem('installment_local_v1', JSON.stringify(remote));
+        saveLocalCache(remote);
+        setLocalDirty(false);
         if(typeof updateCustomerStatuses==='function') updateCustomerStatuses();
         if(typeof render==='function') render();
       }
       applyingRemote=false;
+      readyForSync=true;
+      setFirebaseStatus('ok','متصل بفيرباس — البيانات محفوظة سحابيًا');
     }else{
-      await setDoc(stateRef,{db:window.getAppDb(),ownerUid:user.uid,updatedAt:new Date().toISOString()});
+      const initial=localExists ? (loadLocalCache() || window.getAppDb()) : window.getAppDb();
+      const stamp=new Date().toISOString();
+      await setDoc(stateRef,{db:initial,ownerUid:user.uid,updatedAt:stamp});
+      window.setAppDb(initial);
+      saveLocalCache(initial);
+      setLocalDirty(false);
+      readyForSync=true;
+      if(typeof updateCustomerStatuses==='function') updateCustomerStatuses();
+      if(typeof render==='function') render();
+      setFirebaseStatus('ok','متصل بفيرباس — البيانات محفوظة سحابيًا');
     }
-    readyForSync=true;
-    setFirebaseStatus('ok','متصل بفيرباس — البيانات محفوظة سحابيًا');
-    onSnapshot(stateRef,(snapshot)=>{
-      if(!snapshot.exists()) return;
-      const data=snapshot.data();
-      if(!data.db || applyingRemote) return;
-      const localStamp=localStorage.getItem('installment_last_sync');
-      const remoteStamp=data.updatedAt||'';
-      if(!localStamp || remoteStamp>=localStamp){
+
+    if(!snapshotStarted){
+      snapshotStarted=true;
+      onSnapshot(stateRef,(snapshot)=>{
+        if(!snapshot.exists()) return;
+        const data=snapshot.data();
+        if(!data.db || applyingRemote) return;
+        // Never overwrite unsynced local work with a remote snapshot.
+        if(isLocalDirty()) return;
         applyingRemote=true;
         window.setAppDb(data.db);
-        localStorage.setItem('installment_local_v1',JSON.stringify(data.db));
-        localStorage.setItem('installment_last_sync',remoteStamp);
+        saveLocalCache(data.db);
         if(typeof updateCustomerStatuses==='function') updateCustomerStatuses();
         if(typeof render==='function') render();
         applyingRemote=false;
-      }
-    },(error)=>{
-      console.error('Firestore listener error:',error);
-      setFirebaseStatus('err','خطأ في مزامنة فيرباس');
-    });
+      },(error)=>{
+        console.error('Firestore listener error:',error);
+        readyForSync=false;
+        setFirebaseStatus('local','تعذر مزامنة السحابة — البيانات المحلية ما زالت محفوظة');
+      });
+    }
   }catch(error){
     console.error('Firestore load error:',error);
     readyForSync=false;
-    setFirebaseStatus('err','تعذر الاتصال بقاعدة بيانات فيرباس');
+    setFirebaseStatus('local','السحابة غير متاحة — البيانات محفوظة محليًا مؤقتًا');
   }
 });
 
 window.firebaseSyncSave=function(data){
-  if(!currentUser || !readyForSync || applyingRemote) return;
+  // Always cache first so no user change is lost if the cloud is offline.
+  saveLocalCache(data);
+  setLocalDirty(true);
+  if(!currentUser || !readyForSync || applyingRemote){
+    setFirebaseStatus('local','السحابة غير متاحة — البيانات محفوظة محليًا مؤقتًا');
+    return;
+  }
   clearTimeout(syncTimer);
   syncTimer=setTimeout(async()=>{
-    const stamp=new Date().toISOString();
     try{
+      const stamp=new Date().toISOString();
       await setDoc(stateRef,{db:data,ownerUid:currentUser.uid,updatedAt:stamp});
-      localStorage.setItem('installment_last_sync',stamp);
-      setFirebaseStatus('ok','متصل بفيرباس — تم حفظ آخر تعديل');
+      setLocalDirty(false);
+      saveLocalCache(data);
+      setFirebaseStatus('ok','متصل بفيرباس — تم حفظ آخر تعديل سحابيًا');
     }catch(error){
       console.error('Firestore save error:',error);
-      setFirebaseStatus('err','تعذر حفظ التعديل على فيرباس');
+      readyForSync=false;
+      setFirebaseStatus('local','تعذر الحفظ على السحابة — التعديل محفوظ محليًا وسيُرفع لاحقًا');
     }
   },250);
 };
+
 startFirebase();
 </script>
 </body></html>
